@@ -8,3 +8,5 @@
     - [mysql](/database/mysql)
 - +java
     - [mybatis](/java/mybatis)
+- +Bass脚本
+    - [简介](/bash/introduce)
