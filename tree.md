@@ -9,5 +9,6 @@
 - +java
     - [mybatis](/java/mybatis)
     - [SpringBoot](/java/springboot)
+    - [annotation](/java/annotation)
 - +Bass脚本
     - [简介](/bash/introduce)
