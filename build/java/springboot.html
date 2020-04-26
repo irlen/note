@@ -1,0 +1,201 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>SpringBoot - 欢迎使用Teadocs文档生成系统</title><meta name="description" content="优点: 轻量化实现EJB。缺点：配置太繁琐SpringBoot简化了繁琐的配置，使开发的精力集中于业务逻辑代码的编写。SpringBoot不是对Spring功能的增强，而是提供了一个快速使用Spring的方式。"><meta name="keywords" content="SpringBoot - 欢迎使用Teadocs文档生成系统"><script src="/static/js/jquery-3.3.1.min.js"></script><script src="/static/js/vue.min.js"></script><link rel="stylesheet" href="/static/css/normalize.min.css"><link rel="stylesheet" href="/static/css/monaco.css"><link rel="stylesheet" href="/static/css/loading.css"><link rel="stylesheet" href="/static/css/editormd.min.css"><link rel="stylesheet" href="/static/css/style.css"><link rel="stylesheet" href="/static/css/mobile.css"><link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="/static/css/highlight.default.min.css"><script src="/static/js/highlight.min.js"></script><script>window._CONST={ROOT_PATH:"/"},hljs.initHighlightingOnLoad()</script></head><body><div class="main"><div class="tea-menu"><div class="tea-menu-title"><i class="fa fa-home" aria-hidden="true"></i> <span>欢迎使用Teadocs文档生成系统</span></div><div class="tea-menu-search-warp"><i class="fa fa-search"></i> <input type="text" placeholder="搜索文档" value height="100%"></div><ul class="tea-menu-list"><li><a href="/index.html" title="介绍">介绍</a></li><li><a title="大前端">大前端<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a title="react">react<i class="fa fa-angle-down"></i></a><ul><li><a href="/front/react/react-hooks.html" title="react-hooks">react-hooks</a></li></ul></li><li><a title="vue">vue<i class="fa fa-angle-down"></i></a><ul><li><a href="/front/vue/project.html" title="vue工程">vue工程</a></li><li><a href="/front/vue/vuebase.html" title="vue基础语法">vue基础语法</a></li></ul></li></ul></li><li><a title="数据库">数据库<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/database/mysql.html" title="mysql">mysql</a></li></ul></li><li><a title="java" class="active">java<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/java/mybatis.html" title="mybatis">mybatis</a></li><li><a href="/java/springboot.html" title="SpringBoot" class="active">SpringBoot</a></li><li><a href="/java/annotation.html" title="annotation">annotation</a></li></ul></li><li><a title="Bash脚本">Bash脚本<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/bash/introduce.html" title="简介">简介</a></li></ul></li><li><a title="运维">运维<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/ops/docker.html" title="docker">docker</a></li></ul></li><li><a title="正则">正则<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/regexp/regexp.cmd.html" title="正则">正则</a></li></ul></li></ul><div class="tea-version"><p>version: 0.0.1</p><p>Built with <a href="https://github.com/lisniuse/teadocs" target="_blank">Teadocs</a></p></div></div><div class="tea-content"><div class="tea-nav"><h3 class="top-title" style="font-weight:500;margin:0;font-size:16px"><i class="fa fa-navicon" aria-hidden="true"></i> <span>SpringBoot</span></h3><div class="article-meta"></div></div><div class="tea-container"><article class="markdown-body"><h3 id="spring优缺点"><a href="#spring优缺点" class="header-anchor">#</a> <span>spring优缺点</span></h3><p>优点: 轻量化实现EJB。<br>缺点：配置太繁琐<br>SpringBoot简化了繁琐的配置，使开发的精力集中于业务逻辑代码的编写。<br>SpringBoot不是对Spring功能的增强，而是提供了一个快速使用Spring的方式。</p><h3 id="SpringBoot环境搭建"><a href="#SpringBoot环境搭建" class="header-anchor">#</a> <span>SpringBoot环境搭建</span></h3><p>创建一个module类型的maven工程。</p><p>pom.xml中配置<br>SpringBoot要求，项目要继承SpringBoot的起步依赖spring-boot-starter-parent</p><pre class="prettyprint"><code>  &lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;2.0.1.RELEASE&lt;/version&gt;
+  &lt;/parent&gt;</code></pre><p>SpringBoot要继承SpringMVC进行Controller的开发，所以项目要导入web的启动依赖：</p><pre class="prettyprint"><code>&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre><p>创建引导类<br>在java中建com.scxgo包，新建文件作为入口文件，例如 MySpringBootApplication类</p><pre class="prettyprint"><code>//此注解声明类是一个SpringBoot的引导类
+@SpringBootApplication
+public class MySpringBootApplication{
+  //程序入口
+
+  public static void main(String[] args){
+    SpringApplication.run(MySpringBootApplication.class);
+  }
+}</code></pre><p>创建controller<br>创建controller包，建类，类上面加注解@Controller,方法上加@RequestMapping("/"),@ResponseBody<br>tomcat跑在8080端口<br>IDEA可以自动初始化一个springboot工程<br>创建新工程的时候选择Spring Initializr就可以了。</p><h3 id="SpringBoot工程热部署"><a href="#SpringBoot工程热部署" class="header-anchor">#</a> <span>SpringBoot工程热部署</span></h3><p>pom.xml中需添加依赖<br><dependency><br><groupid>org.springframework.boot</groupid><br><artifactid>spring-boot-devtools</artifactid><br></dependency><br>注意：热部署失败的原因是 IDEA默认情况下不自动编译，需要对IDEA进行自动编译设置<br>file-settings-Compiler-build project automatically</p><p>shift+ctrl+alt+/,选择Registry-compiler.automake.allow.when.app.running 勾选</p><h3 id="SpringBoot配置文件"><a href="#SpringBoot配置文件" class="header-anchor">#</a> <span>SpringBoot配置文件</span></h3><p>SpringBoot是基于约定的，很多配置都有默认值，需要增加或者覆盖原有配置，可以使用<br>resources文件加下application.properties 或者 application.yml(或者application.yaml)进行配置。（命名规则为application<em>.properties或者application</em>.yml）<br>yml格式</p><pre class="prettyprint"><code>//普通数据的配置
+name: zhangsan  //值前面一定要有个空格
+
+//对象的配置
+person:
+  name: zhangsan //缩进是自由的，但是要保证每层的缩进是一样的
+  age: 18
+  addr: suizhou
+
+//行内对象配置(用的少)
+person: {name: zhangsan, age: 18, addr: suizhou}
+
+//配置数组、集合
+city:
+  - beijing
+  - shanghai
+  - suizhou
+  - shenzhen
+
+//行内数组、集合
+city: [beijing,shanghai,suizhou,shenzhen]
+
+//配置数组、集合（对象数据）
+student:
+  - name: tom
+    age: 18
+    addr: beijing
+  - name: lily
+    age: 25
+    addr: suizhou
+//行内
+student: [{name: tom,age: 18,addr:beijing},{name:lily,age:25,addr: suizhou}]</code></pre><p>配置文件与配置类的属性映射<br>有两种方式<br>1.@Value 注解可以将配置文件中的值映射到一个Spring管理的Bean字段上。<br>application.yml中</p><pre class="prettyprint"><code>person:
+  name: zhangsan
+  age: 18
+</code></pre><p>Bean代码如下：</p><pre class="prettyprint"><code>  @Controller
+  public class QuicStartController{
+    @Value("${person.name}")
+    private String name;
+    @Value("${person.age}")
+    private Integer age;
+  }</code></pre><p>2.@ConfigurationProperties(prefix="配置文件中key的前缀")，该注解可以将文件中的配置自动与实体进行映射<br>application.yml中</p><pre class="prettyprint"><code>person:
+  name: zhangsan
+  age: 18</code></pre><p>Bean中</p><pre class="prettyprint"><code>@Controller
+@ConfigurationProperties(prefix="person")
+pulic class QuikStartController{
+  private String name;
+  private String age;
+  @RequestMapping("/quik")
+  @ResponseBody
+  public String quik(){
+    return "my name"+" is "+name;
+  }
+}</code></pre><h3 id="SpringBoot集成"><a href="#SpringBoot集成" class="header-anchor">#</a> <span>SpringBoot集成</span></h3><p>一.整合mybatis<br>添加mybatis起步依赖</p><pre class="prettyprint"><code>  &lt;dependency&gt;
+    &lt;groupId&gt;org.mybatis.spring.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;mybatis-spring-boot-starter&lt;artifactId&gt;
+    &lt;version&gt;1.1.1&lt;/version&gt;
+  &lt;/dependency&gt;</code></pre><p>导入数据库坐标（mysql连接驱动）</p><pre class="prettyprint"><code>&lt;dependency&gt;
+  &lt;groupId&gt;mysql&lt;/groupId&gt;
+  &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre><p>添加数据库连接信息</p><pre class="prettyprint"><code>spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root</code></pre><p>插入数据(建表sql语句)</p><pre class="prettyprint"><code>//建表语句
+  DROP TABLE IF EXISTS `user`;
+  CREATE TABLE `user`(
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `username` varchar(50) DEFAULT NULL,
+      `password` varchar(50)  DEFAUL NULL,
+      `name` varchar(50) DEFAULT NULL,
+      PRIVATE KEY (`id`)
+  ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+
+//插入语句
+  INSERT INTO `user` VALUES ('1','zhangsan','123','张三');
+  INSERT INTO `user` VALUES ('2','lisi','123','李四');</code></pre><p>创建实体<br>java内包里见domain包，创建文件User.java建实体类</p><pre class="prettyprint"><code>public class User{
+  private Integer id;
+  private String username;
+  private String password;
+  private String name;
+  //后面为getter，setter方法
+}</code></pre><p>resources文件夹下创建mapper包，里面配置UserMapper.xml</p><pre class="prettyprint"><code>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" &gt;
+
+&lt;mapper namespace="com.scxgo.mapper.UserMapper"&gt;
+  &lt;select id="queryUserList" resultType="user"&gt;
+    select * from user
+  &lt;/select&gt;
+&lt;/mapper&gt;</code></pre><p>java内包中建mapper包，建UserMapper.java文件，写接口</p><pre class="prettyprint"><code>  @Mapper
+  public interface UserMapper{
+    public List&lt;User&gt; queryUserList();
+  }</code></pre><p>在application.yml中配置mybatis信息</p><pre class="prettyprint"><code>mybatis:
+  type-aliases-package: com.scxgo.domain  #pojo别名扫描包
+  mapper-locations: classpath:mapper/*Mapper.xml  #加载mybatis映射文件</code></pre><p>写个controller测试下<br>建包controller</p><pre class="prettyprint"><code>  @Controller
+  public class MybatisController{
+    @Autowired
+    private  UserMapper userMapper;
+    @RequestMapping("/query")
+    @ResponseBody
+    public List&lt;User&gt; queryUserList(){
+      List&lt;User&gt; users = userMapper.queryUserList();
+      return users;
+    }
+  }</code></pre><h3 id="集成Junit"><a href="#集成Junit" class="header-anchor">#</a> <span>集成Junit</span></h3><p>添加Junit起步依赖</p><pre class="prettyprint"><code>  &lt;dependency&gt;
+    &lt;groupId&gt;org.springframwork.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt;</code></pre><p>编写测试类</p><pre class="prettyprint"><code>@RunWith(SpringRunner.class)
+@SpringBootTest(classes=MyApplication.class) //引导类的字节码
+public class MyTest{
+  @Test
+  public void test(){
+    ...
+  }
+}</code></pre><h3 id="Spring-Data-JPA集成"><a href="#Spring-Data-JPA集成" class="header-anchor">#</a> <span>Spring Data JPA集成</span></h3><p>添加起步依赖</p><pre class="prettyprint"><code>&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre><p>添加数据库驱动依赖</p><pre class="prettyprint"><code>&lt;dependency&gt;
+  &lt;groupId&gt;mysql&lt;/groupId&gt;
+  &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre><p>在application.yml中配置数据库和jpa相关属性</p><pre class="prettyprint"><code>#DB Configuration
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root
+#JPA Configuration
+  jpa:
+    datasource: mysql
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+</code></pre><p>在domain文件中创建实体类</p><pre class="prettyprint"><code>@Entiry
+public class User{
+  @Id
+  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  private Long id;
+  private String username;
+  private String password;
+  private name;
+}</code></pre><p>创建repository包，建UserRepository类</p><pre class="prettyprint"><code>//User为实体类名，Long是实体类中id的数据类型
+@Repository
+public interface UserRepository extends JpaRepository&lt;User,Long&gt;{
+  public List&lt;User&gt; findAll();
+}</code></pre><p>创建实现类UserImpl</p><pre class="prettyprint"><code></code></pre><h3 id="SpringBoot集成Redis"><a href="#SpringBoot集成Redis" class="header-anchor">#</a> <span>SpringBoot集成Redis</span></h3><p>安装redis服务器并启动<br>添加redis起步依赖</p><pre class="prettyprint"><code>  &lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
+  &lt;/dependency&gt;</code></pre><p>在application.yml中注入redis连接信息</p><pre class="prettyprint"><code>spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379</code></pre><p>测试redis服务</p><pre class="prettyprint"><code>@RunWith("SpringRunner")
+@SpringBootTest(classes=MySpringBootApplication.class)
+public class RedisTest{
+  @Autowired
+  private RedisTemplate&lt;String,String&gt; redisTemplate;
+  @Autowired
+  private UserRepository userRepository;
+  @Test
+  public void test(){
+    //1.从redis中去获得需要的数据，一般是json字符串格式
+    String userListJson = redisTemplate.boundValueOps("user.findAll").get();
+    //2.判断redis中是否存在数据
+    if(null == userListJson){
+      //3.不存在，则从数据库中查询
+      List&lt;User&gt; all = userRepository.findAll();
+      //4.将查出的数据存储到redis缓存中
+      //存之前先要把list转换成string，此时可是有spring自带的jackson来做
+      ObjectMapper objectMapper = new ObjectMapper();
+      userListJson = objectMapper.writeValueAsString(all);
+      redisTemplate.boundValueOps("user.findAll").set(userListJson);
+    }
+
+  }
+}
+</code></pre><p><code></code></p></article><div class="page"><a class="page-prev" href="/java/mybatis.html"><i class="fa fa-arrow-left" aria-hidden="true"></i> mybatis </a><a class="page-next" href="/java/annotation.html">annotation <i class="fa fa-arrow-right" aria-hidden="true"></i></a></div><div class="toc"><ul class="toc-affix"><li class="toc-item text-elli" style="padding-left:15px" data-link="spring优缺点"><a href="#spring优缺点" title="spring优缺点">spring优缺点</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot环境搭建"><a href="#SpringBoot环境搭建" title="SpringBoot环境搭建">SpringBoot环境搭建</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot工程热部署"><a href="#SpringBoot工程热部署" title="SpringBoot工程热部署">SpringBoot工程热部署</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot配置文件"><a href="#SpringBoot配置文件" title="SpringBoot配置文件">SpringBoot配置文件</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot集成"><a href="#SpringBoot集成" title="SpringBoot集成">SpringBoot集成</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="集成Junit"><a href="#集成Junit" title="集成Junit">集成Junit</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="Spring-Data-JPA集成"><a href="#Spring-Data-JPA集成" title="Spring Data JPA集成">Spring Data JPA集成</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot集成Redis"><a href="#SpringBoot集成Redis" title="SpringBoot集成Redis">SpringBoot集成Redis</a></li></ul></div></div></div><i class="fa fa-arrow-circle-up gotop" aria-hidden="true"></i><div id="menu-mask"></div></div><script src="/data.js"></script><script src="/static/js/main.js"></script><script src="/static/js/mobile.js"></script>
+<script src="/__webscoket__/socket.io.js"></script>
+<script src="/__webscoket__/socket.client.js"></script>
+</body></html>

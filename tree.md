@@ -4,6 +4,7 @@
         - [react-hooks](/front/react/react-hooks)
     - vue
         - [vue工程](/front/vue/project)
+        - [vue基础语法](/front/vue/vuebase)
 - +数据库
     - [mysql](/database/mysql)
 - +java
@@ -12,3 +13,7 @@
     - [annotation](/java/annotation)
 - +Bash脚本
     - [简介](/bash/introduce)
+- +运维
+    - [docker](/ops/docker)
+- +正则
+    - [正则](/regexp/regexp.cmd)
