@@ -11,6 +11,8 @@
     - [mybatis](/java/mybatis)
     - [SpringBoot](/java/springboot)
     - [annotation](/java/annotation)
+- +微信小程序
+    - [微信小程序](/wechat/wechat)
 - +Bash脚本
     - [简介](/bash/introduce)
 - +git

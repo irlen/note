@@ -141,3 +141,9 @@ adduser -r -c 'git version control' -d /home/irlen -m irlen
 4.设置密码为irlen
 passwd irlen
 这时候可以在主目录中建文件夹，使用git init --bare初始化目录
+
+### 在IDEA中使用git
+配置git
+settings->Version Control->Git
+工程加入到本地仓库
+VCS->Import into Version Control->Create Git repository
