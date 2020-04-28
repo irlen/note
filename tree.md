@@ -13,7 +13,9 @@
     - [annotation](/java/annotation)
 - +Bash脚本
     - [简介](/bash/introduce)
+- +git
+    - [git](/git/git)
 - +运维
     - [docker](/ops/docker)
 - +正则
-    - [正则](/regexp/regexp.cmd)
+    - [正则](/regexp/regexp)

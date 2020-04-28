@@ -147,5 +147,97 @@ docker run -id -v /usr/local/myhtml:/usr/local/myhtml --name=mycentos2 centos:7
 
 
 ### mysql部署
-拉取mysql镜像
+1.拉取mysql镜像
 docker pull centos/mysql-57-centos7   //拉取mysql5版本镜像
+
+2.创建容器
+docker run -id --name=mymysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=irlen 镜像名称
+此时可用宿主机的ip和映射端口去连容器内mysql
+
+
+### tomcat部署
+1.拉取tomcat镜像
+docker pull tomcat:7-jre7
+
+2.创建容器(-p：端口映射，-v:目录映射)
+docker -id --name=mytomcat -p 9000:8080 -v /usr/local/webapps:/user/local/tomcat/webapps  tomcat:7-jre7
+
+### Nginx部署
+1.拉取Nginx镜像
+  docker pull nginx
+2.创建nginx容器
+  docker run -id --name=mynginx -p 80:80 nignx
+
+### Redis部署
+1.拉取Redis镜像
+docker pull redis
+2.创建容器
+docker run -id --name=myredis -p 6379:6379 redis
+
+### 迁移与备份
+1.容器保存为镜像
+  docker commit mynginx mynginx_i
+2.镜像备份
+  docker save -o mynginx.tar mynginx_i  //-o  output意思
+3.镜像恢复与迁移
+  docker load -i mynginx.tar  //-i input的意思
+
+### Dockerfile常用命令
+
+Dockerfile是由一系列命令和参数构成的脚本，用于基础镜像并最终创建一个新的镜像。
+常用命令
+```
+FROM  镜像名   //从哪个基础镜像启动构建流程
+MANITAINER irlen //创建进行的作者
+ENV  key:value  //设置环境变量（可写多条）
+RUN  命令  //dockerfile核心部分（可写多条）
+ADD  宿主文件 容器文件  //将宿主文件复制到容器内，如果是压缩文件会自动解压
+COPY 宿主文件 容器文件  //同上，但是压缩文件不会自己解压
+WORKDIR 文件夹  //设置工作目录
+```
+
+### 使用Dockerfile创建镜像（脚本文件名称必须叫Dockerfile）
+```
+example: 用Dockerfile创建一个jdk1.8的镜像
+文件名称 Dockerfile
+文件内容
+  FROM centos:7
+  MANITAINER irlen
+  WORKDIR /usr
+  RUN mkdir /usr/local/java
+  ADD jdk-yu171-linux-x64.tar.gz /usr/local/java/
+
+  ENV JAVA_HOME /usr/local/java/jdk1.8.0_171
+  ENV JRE_HOME $JAVA_HOME/jre
+  ENV CLASSPATH $JAVA_HOME/bin/dt.jar:$JAVA_HJOME/lib/tools.jar:$JRE_HOME/lib:$CLASSPATH   //linux用冒号代表分号
+  ENV PATH $JAVA_HOME/bin:$PATH
+
+  //执行Dockerfile创建镜像
+  docker build -t="镜像名称" .   //.表示在当前文件中寻找Dockerfile文件
+
+```
+
+### Docker私有仓库
+
+私有仓库搭建与配置
+1.拉取私有仓库镜像（私有仓库本身也是一个镜像）
+  docker pull registry
+2.启动私有仓库容器
+  docker run -id --name=registry -p 5000:5000 registry
+3.打开浏览器查看host:5000/v2/_catalog看到{"repositories":[]} 表示私有仓库搭建成功并且内容为空。
+
+4.修改daemon.json  让docker信任私有仓库地址。
+```
+vim /etc/docker/daemon.json
+添加(host为宿主机ip)
+{
+  “insecure-registries”:[host地址:5000]
+}
+重启docker服务
+systemctl restart docker
+```
+将镜像上传到私有仓库（私有仓库容器需要启动）
+docker tag 镜像名 私服地址:端口/镜像名
+docker push 私服地址:端口/镜像名
+
+从私有仓库下载镜像
