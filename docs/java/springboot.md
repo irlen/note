@@ -370,11 +370,37 @@ public class RedisTest{
 
 ```
 
+### 日志使用
+选择slf4j和Logback框架
+日志级别 error warn info debug trace
+默认级别为info，info及其以上级别会触发日志记录
+在类中使用Log
+1.非注解方法
+private final Logger logger =  loggerFactory.getLogger(LoggerTest.class);
+//LoggerTest为当前使用日志的类
+logger.info('输出信息');
 
+2.使用注解@Slf4j,需要用到lombok小工具。
+```
+//pom.xml中配置
+<dependency>
+  <groupId>org.projectlombok</groupId>
+  <artifactId>lombok</artifactId>
+</dependency>
+//类中注解用
+log.info("输出信息");
+//日志中输出变量的方法
+log.info("name:"+name);
+或者
+log.info("name:{}",name);
+```
+Logback的配置（application.yml中配置，可区分info和erro,xml可配置定期产生日志）
 
-
-
-
+logging:
+  pattern:
+    console: "%d - %msg%n" //日志格式，输出时间-内容-换行
+    file: /var/log/tomcat/sell.log //输出日志的文件
+    level: info  //输出日志级别（info及其级别以上的都会被输出）
 
 
 
