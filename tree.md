@@ -11,7 +11,8 @@
     - [mybatis](/java/mybatis)
     - [SpringBoot](/java/springboot)
     - [annotation](/java/annotation)
-    - [api](/java/api)
+    - [常用方法](/java/method)
+    - [常用api](/java/api)
 - +微信小程序
     - [微信小程序](/wechat/wechat)
 - +Bash脚本
@@ -20,5 +21,6 @@
     - [git](/git/git)
 - +运维
     - [docker](/ops/docker)
+    - [nginx](/ops/nginx)
 - +正则
     - [正则](/regexp/regexp)
