@@ -63,3 +63,9 @@ wx.request({
     fail:function(result){},
     complete:function(){//接口调用结束后的回调函数，成功或失败都会执行}
   })
+
+7.引入组件库开发
+npm  init
+npm i vant-weapp -S --production
+工具-构建npm
+右上角详情-本地设置-使用npm模块

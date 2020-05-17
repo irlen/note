@@ -126,3 +126,21 @@
 @SpringBootTest(classes = MySpringBootApplication.class) //引导类的字节码
 方法上的注解
 @Test
+
+
+
+###实体类中的注解
+@Entity  //注解在类上，表示设个类是实体类
+@DynamicUpdate //注解在类上，更新时间字段在该条数据更新的时候更新为当前时间
+注解在成员变量上的注解
+@Id  表明该字段为映射数据表的主键
+@GeneratedValue(strategy=GenerationType.IDENTITY) //mysql数据库自增字段的策略
+
+配置lombok
+<dependency>
+  <groupId>org.projectlombok</groupId>
+  <artifactId>lombok</artifactId>
+</dependency>
+安装lombok插件。
+然后在类上使用@Data注解。
+这样就不用写getter,setter, toString方法了。

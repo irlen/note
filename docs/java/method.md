@@ -27,3 +27,8 @@ orElse()、 orElseGet() 和 orElseThrow()
   orElse和orElse的区别在于，如果value不为空，orElse中的操作仍然要执行，orElseGet则不会。
   orElseThrow()是在value为空的时候抛出异常；
 ```
+
+### 合并连个类（拷贝第一个类的同名属性到第二个类）
+```
+BeanUtils.copyProperties(Obj1,Obj2);
+```

@@ -402,6 +402,239 @@ logging:
     file: /var/log/tomcat/sell.log //输出日志的文件
     level: info  //输出日志级别（info及其级别以上的都会被输出）
 
+### 表单验证及参数接受
+接收参数的几种方式
+```
+//此为接收Girl对象的各个属性
+publiuc addGirl(
+  @RequestParam('age') Integer age,
+  @RequestParam('sex') String sex
+){
+
+}
+//接收一个Girl对象
+public addGirl(Girl girl){
+
+}
+```
+验证表单中字段合法性
+实体类中加入限制注解
+```
+@Entity
+public class Girl(){
+  //例如对年龄进行限制
+  @Min(value=18,message="未成年人禁止入内")
+  private Integer age;
+}
+//在controller方法中
+public Girl addGirl(@Valid Girl girl, BindingResult bindingResult){
+    //对girl字段做验证，验证结果在bindingResult中
+    //判断是否严重通过
+    if(bindingResult.hasErrors){
+      System.out.pringln(bindingResult.getFieldError().getDefaultMessage();
+      return null;
+    }
+}
+```
+
+### 使用AOP处理请求
+pom.xml中添加依赖
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-aop</artifactId>
+</dependency>
+//新建切面类
+```
+@Component
+@Aspect
+public HttpAspect(){
+  pravite final static logger = loggerFactory.getLogger(HttpAspect.class);
+  @Before("execution(public * com.scxgo.myproject.addGirl(..))")
+  //两点的意思是无论该方法的参数是什么都适用，就是addGirl所有的重载方法。
+  //@Before是方法执行之前,执行切面中的方法,@After是在方法执行完之后执行切面中方法。
+  public void doBeforMethod(){
+    logger.info("方法执行前的操作")
+  }
+}
+
+//excution内容每次都要重复写，可以统一定义
+@Pointcut("execution(public * com.scxgo.myproject.addGirl(..))")
+public void log(){}
+//然后before这样写就行了
+@Before("log()")
+public void doBefore(){}
+```
+### 统一异常处理
+1.定义返回的最外层对象Result
+```
+public class Result<T>{
+  private Integer code;
+  private String msg;
+  private T data;
+  //后面为getter,setter方法
+}
+```
+2.定义一个工具类，优化重复代码
+public class ResultUtil{
+  //成功的时候调用
+  public static Result success(Object data){
+    Result result = new Result();
+    result.setCode(1);
+    result.setMessage("成功");
+    result.setData(data);
+    return result
+  }
+  //有时候成功的时候并不需要返回数据，再写一个成功的重载方法
+  public static Result success(){
+    return success(null);
+  }
+  //失败的时候调用
+  public static Result error(Integer code, String msg){
+    Result result = new Result();
+    result.setMsg(msg);
+    result.setCode(code);
+    return result;
+  }
+}
+
+3.新建一个异常捕获类
+```
+@controllerAdvice
+public class ExceptionHandle{
+  @ExceptionHandler(Exception.class)
+  @ResponseBody
+  public Result handle(Exception e){
+    return ResultUtil.error(0,e.getMessage());
+  }
+}
+
+//@ControllerAdvice注解的三个作用
+springMVC中的功能，springboot中可以直接使用
+//1.全局异常处理
+//2.全局数据绑定
+//3.全局数据预处理
+@ExceptionHandler注解指定处理哪一类异常，这里是所有异常类型。
+@ResponseBody 因为会返回类似json格式的数据到前端，此类上没有RestController注解。
+
+```
+4.定义自己的异常类
+```
+public class GirlException extends RunTimeException{
+  private Integer Code;
+  //构造函数
+  public GirlException(Integer code, String message){
+    supper(message);
+    this.code = code;
+  }
+
+  //下面为code的getter,setter方法
+}
+
+//此时异常捕获类可改写成
+@controllerAdvice
+public class ExceptionHandle{
+  @ExceptionHandler(Exception.class)
+  @ResponseBody
+  public Result handle(Exception e){
+    if(e instanceOf GirlException){
+      GirlException girlException = (GirlException) e;
+      return ResultUtil.error(girlException.getCode(),girlException.getMessage());
+    }
+    return ResultUtil.error(0,e.getMessage());
+  }
+}
+//代码中抛出异常时候可以 throw new GirlException(100,"...出错了");
+
+```
+5.定义一个枚举类型来管理code和msg的对应关系，可统一维护code和msg
+```
+public enum ResultEnum{
+  UNKONUL_ERROR(-1,"未知错误"),
+  SUCCESS(1,"成功");
+
+
+
+  private Integer code;
+  private String msg;
+  public ResultEnum(Integer code,String msg){
+    this.code = code;
+    this.msg = msg;
+  }
+  //下面为getter方法，枚举不需要setter方法
+
+  此时抛出错误时候直接用枚举代替code和msg,自定义异常类应该改成如下：
+  public class GirlException extends RunTimeException{
+    private Integer Code;
+    //构造函数
+    public GirlException(ResultEnum resultEnum){
+      supper(resultEnum.getMsg());
+      this.code = resultEnum.getCode();
+    }
+
+    //下面为code的getter,setter方法
+  }
+
+
+  ```
+}
+
+### 分布式系统下的session
+分布式系统集群是紧密相关的，但是完全不同的概念。
+分布式是指拥有多个节点，各个几点之间通过消息通信。
+集群是指同一类节点有多个，担任同一功能，是为了分担任务，减少压力。
+
+
+
+
+
+### mabatis注解使用
+pom.xml引入起步依赖
+<dependency>
+  <groupId>org.mybatis.spring.boot</groupId>
+  <artifactId>mybatis-spring-boot-starter</artifactId>
+</dependency>
+新建实体类（省略），新建对应的mapper。
+```
+//以新增为例
+public interface ProductCategoryMapper{
+  @Insert("insert into product_category (category_name,category_type) values(#{category_name, jdbcType=VARCHAR},#{category_type,jdbcType=INTEGER})")
+  int insertByMap(Map<String,Object> map);
+  //参数可以用Map也可以用对象，例如ProductCategory
+}
+
+//此时需要在启动类上配置MapperScan,启动时会扫描该mapper
+@MapperScan(basePackages="com.imooc.dataobject.mapper")
+
+//使用的时候（单元测试为例）
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@Slf4j
+public class mybatisTest{
+  @Autowired
+  private ProductCategoryMapper mapper;
+  @Test
+  public void insertTest(){
+    Map<String,Object> map = new HashMap<>();
+    map.put("category_name","男生最爱");  
+    map.put("category_type","101");  
+    mapper.insertByMap(map);
+  }
+}
+
+//如果需要返回的结果对应成实体类名称，可以这样做
+@Select("select * from product_category where category_type = #{categoryType}")
+@Results({
+    @Result(column="category_type",property="categoryType"),
+    @Result(column="category_name",property="categoryName")
+})
+ProductCategory findBycategoryType(Integer categoryType);
+
+```
+
+
+
+
+
 
 
 
