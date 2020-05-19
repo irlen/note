@@ -630,8 +630,83 @@ public class mybatisTest{
 ProductCategory findBycategoryType(Integer categoryType);
 
 ```
+### websocket
+```
+pom.xml中引入websocket起步依赖
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-websocket</artifactId>
+</dependency>
+//客户端
+  let websocket = null;
+  if('Websocket' in window){
+    websocket =  new Websocket('ws://...');
+  }else{
+    alert("该浏览器不支持websocket");
+  }
+ websocket.onopen = function(event){
+   console.log("建立连接")
+ }
+ websocket.onclose = function(event){
+   console.log("关闭连接")
+ }
+ websocket.onmessage = function(evnet){
+   console.log("收到消息"+event.data)
+ }
+ websocket.onerror = funciton(){
+   alert("websocket通信发生错误")
+ }
+ window.onbeforeunload = function(){
+   websocket.close();
+   console.log("窗口关闭，关闭websocket连接")
+ }
 
+ //后端
+ //写个websocket配置类
 
+ @Compoennt
+ public class WebsocketConfig{
+   @Bean
+   public ServerEndpointExporter serverEndpointExporter{
+     return new ServerEndpointExporter();
+   }
+ }
+ //写websocket组件
+ @Component
+ @ServerEndpoint("/webSocket")
+ @Slf4j
+ public class WebSocket{
+   private Session session;
+   private static CopyOnWriteArraySet<WebSocket> webSocketSet = new CopyOnWriteArraySet<>();
+   @onopen
+   public void onOpen(Session session){
+     this.session = session;
+     webSocketSet.add(this)
+     log.info("[websocket消息] 有新的连接,总数：{}",webSocketSet.size());
+   }
+ }
+ @OnClose
+ public void onClose(){
+   webSocketSet.remove(this);
+   log.info("断开，总数{}",webSocketSet.size());
+ }
+ @OnMessage
+ public void onMessage(String message){
+   log.info("收到客户端发来的消息:{}",message);
+ }
+
+ public void sendMessage(String message){
+   for(WebSocket webSocket:webSocketSet){
+     log.info("广播消息，message={}",message);
+     try{
+       webSocket.session.getBasicRemote().sendText(message);
+     } catch(Exception e){
+       e.printStackTrace();
+     }
+   }
+
+ }
+```
 
 
 
