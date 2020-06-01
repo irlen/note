@@ -125,6 +125,7 @@
 1.安装git服务的环境
   yum -y install curl curl-devel zlib-devel openssl-devel perl cpio expat-devel gettext-devel gcc cc
 2.下载 git-2.5.0.tar.gz
+git官网下载：https://mirrors.edge.kernel.org/pub/software/scm/git/
 ```
   解压
   tar -xvzf git-2.5.0.tar.gz
@@ -138,9 +139,14 @@
 3.添加用户
 adduser -r -c 'git version control' -d /home/irlen -m irlen
 此命令执行后会创建/home/irlen目录作为irlen用户的主目录，用户名是irlen
+进入home/irlen(irlen账户的家目录)。
 4.设置密码为irlen
 passwd irlen
-这时候可以在主目录中建文件夹，使用git init --bare初始化目录
+这时候可以在主目录中建文件夹indus.git，进入indus.git 使用git init初始化目录,
+进入.git文件加，vim  config 在最后加上denyCurrentBranch = ignore
+
+5.本地连接远程私服
+git remote add origin git@10.0.0.99:/home/irlen/indus.git
 
 ### 在IDEA中使用git
 配置git
