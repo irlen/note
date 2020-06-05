@@ -87,9 +87,9 @@ List
   Iterator本身也是一个对象，但它是由List的实例调用iterator()方法的时候创建的。
   Iterator对象知道如何遍历一个List，并且不同的List类型，返回的Iterator对象实现也是不同的，但总是具有最高的访问效率。
   Iterator对象有两个方法：hasNext()判断是否有下一个元素，next()返回下一个元素。
-
+```
   例： List<String> list = List.of("orange","apple","grape");
-  for(Iterator<String> lt=list.iterator();lt.hasNext();){
+  for( Iterator<String> lt=list.iterator(); lt.hasNext(); ){
     String s = lt.next();
     System.out.println(s);
   }
@@ -99,7 +99,7 @@ List
   //此方法会丢失类型，通常这样做
   String[] ar = ls.toArray(new String[3]);
   //List.of()是一个只读list
-
+```
 Map
   Map<String,Student> mp = new HashMap<>();
   mp.put("xiaoming",new Student());
