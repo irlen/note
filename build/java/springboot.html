@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>SpringBoot - 欢迎使用Teadocs文档生成系统</title><meta name="description" content="优点: 轻量化实现EJB。缺点：配置太繁琐SpringBoot简化了繁琐的配置，使开发的精力集中于业务逻辑代码的编写。SpringBoot不是对Spring功能的增强，而是提供了一个快速使用Spring的方式。"><meta name="keywords" content="SpringBoot - 欢迎使用Teadocs文档生成系统"><script src="/static/js/jquery-3.3.1.min.js"></script><script src="/static/js/vue.min.js"></script><link rel="stylesheet" href="/static/css/normalize.min.css"><link rel="stylesheet" href="/static/css/monaco.css"><link rel="stylesheet" href="/static/css/loading.css"><link rel="stylesheet" href="/static/css/editormd.min.css"><link rel="stylesheet" href="/static/css/style.css"><link rel="stylesheet" href="/static/css/mobile.css"><link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="/static/css/highlight.default.min.css"><script src="/static/js/highlight.min.js"></script><script>window._CONST={ROOT_PATH:"/"},hljs.initHighlightingOnLoad()</script></head><body><div class="main"><div class="tea-menu"><div class="tea-menu-title"><i class="fa fa-home" aria-hidden="true"></i> <span>欢迎使用Teadocs文档生成系统</span></div><div class="tea-menu-search-warp"><i class="fa fa-search"></i> <input type="text" placeholder="搜索文档" value height="100%"></div><ul class="tea-menu-list"><li><a href="/index.html" title="介绍">介绍</a></li><li><a title="大前端">大前端<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a title="react">react<i class="fa fa-angle-down"></i></a><ul><li><a href="/front/react/react-hooks.html" title="react-hooks">react-hooks</a></li></ul></li><li><a title="vue">vue<i class="fa fa-angle-down"></i></a><ul><li><a href="/front/vue/project.html" title="vue工程">vue工程</a></li><li><a href="/front/vue/vuebase.html" title="vue基础语法">vue基础语法</a></li></ul></li></ul></li><li><a title="数据库">数据库<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/database/mysql.html" title="mysql">mysql</a></li></ul></li><li><a title="java" class="active">java<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/java/mybatis.html" title="mybatis">mybatis</a></li><li><a href="/java/springboot.html" title="SpringBoot" class="active">SpringBoot</a></li><li><a href="/java/annotation.html" title="annotation">annotation</a></li><li><a href="/java/api.html" title="api">api</a></li></ul></li><li><a title="微信小程序">微信小程序<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/wechat/wechat.html" title="微信小程序">微信小程序</a></li></ul></li><li><a title="Bash脚本">Bash脚本<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/bash/introduce.html" title="简介">简介</a></li></ul></li><li><a title="git">git<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/git/git.html" title="git">git</a></li></ul></li><li><a title="运维">运维<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/ops/docker.html" title="docker">docker</a></li></ul></li><li><a title="正则">正则<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/regexp/regexp.html" title="正则">正则</a></li></ul></li></ul><div class="tea-version"><p>version: 0.0.1</p><p>Built with <a href="https://github.com/lisniuse/teadocs" target="_blank">Teadocs</a></p></div></div><div class="tea-content"><div class="tea-nav"><h3 class="top-title" style="font-weight:500;margin:0;font-size:16px"><i class="fa fa-navicon" aria-hidden="true"></i> <span>SpringBoot</span></h3><div class="article-meta"></div></div><div class="tea-container"><article class="markdown-body"><h3 id="spring优缺点"><a href="#spring优缺点" class="header-anchor">#</a> <span>spring优缺点</span></h3><p>优点: 轻量化实现EJB。<br>缺点：配置太繁琐<br>SpringBoot简化了繁琐的配置，使开发的精力集中于业务逻辑代码的编写。<br>SpringBoot不是对Spring功能的增强，而是提供了一个快速使用Spring的方式。</p><h3 id="SpringBoot环境搭建"><a href="#SpringBoot环境搭建" class="header-anchor">#</a> <span>SpringBoot环境搭建</span></h3><p>创建一个module类型的maven工程。</p><p>pom.xml中配置<br>SpringBoot要求，项目要继承SpringBoot的起步依赖spring-boot-starter-parent</p><pre class="prettyprint"><code>  &lt;parent&gt;
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>SpringBoot - 欢迎使用Teadocs文档生成系统</title><meta name="description" content="优点: 轻量化实现EJB。缺点：配置太繁琐SpringBoot简化了繁琐的配置，使开发的精力集中于业务逻辑代码的编写。SpringBoot不是对Spring功能的增强，而是提供了一个快速使用Spring的方式。"><meta name="keywords" content="SpringBoot - 欢迎使用Teadocs文档生成系统"><script src="/static/js/jquery-3.3.1.min.js"></script><script src="/static/js/vue.min.js"></script><link rel="stylesheet" href="/static/css/normalize.min.css"><link rel="stylesheet" href="/static/css/monaco.css"><link rel="stylesheet" href="/static/css/loading.css"><link rel="stylesheet" href="/static/css/editormd.min.css"><link rel="stylesheet" href="/static/css/style.css"><link rel="stylesheet" href="/static/css/mobile.css"><link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="/static/css/highlight.default.min.css"><script src="/static/js/highlight.min.js"></script><script>window._CONST={ROOT_PATH:"/"},hljs.initHighlightingOnLoad()</script></head><body><div class="main"><div class="tea-menu"><div class="tea-menu-title"><i class="fa fa-home" aria-hidden="true"></i> <span>欢迎使用Teadocs文档生成系统</span></div><div class="tea-menu-search-warp"><i class="fa fa-search"></i> <input type="text" placeholder="搜索文档" value height="100%"></div><ul class="tea-menu-list"><li><a href="/index.html" title="介绍">介绍</a></li><li><a title="大前端">大前端<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a title="react">react<i class="fa fa-angle-down"></i></a><ul><li><a href="/front/react/react-hooks.html" title="react-hooks">react-hooks</a></li></ul></li><li><a title="vue">vue<i class="fa fa-angle-down"></i></a><ul><li><a href="/front/vue/project.html" title="vue工程">vue工程</a></li><li><a href="/front/vue/vuebase.html" title="vue基础语法">vue基础语法</a></li></ul></li></ul></li><li><a title="移动端">移动端<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/mobile/reactnative.html" title="react-native">react-native</a></li></ul></li><li><a title="数据库">数据库<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/database/mysql.html" title="mysql">mysql</a></li></ul></li><li><a title="java" class="active">java<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/java/mybatis.html" title="mybatis">mybatis</a></li><li><a href="/java/springboot.html" title="SpringBoot" class="active">SpringBoot</a></li><li><a href="/java/annotation.html" title="annotation">annotation</a></li><li><a href="/java/method.html" title="常用方法">常用方法</a></li><li><a href="/java/api.html" title="常用api">常用api</a></li></ul></li><li><a title="微信小程序">微信小程序<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/wechat/wechat.html" title="微信小程序">微信小程序</a></li></ul></li><li><a title="Bash脚本">Bash脚本<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/bash/introduce.html" title="简介">简介</a></li></ul></li><li><a title="git">git<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/git/git.html" title="git">git</a></li></ul></li><li><a title="运维">运维<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/ops/docker.html" title="docker">docker</a></li><li><a href="/ops/nginx.html" title="nginx">nginx</a></li></ul></li><li><a title="正则">正则<i class="fa fa-angle-down unfold"></i></a><ul class="unfold"><li><a href="/regexp/regexp.html" title="正则">正则</a></li></ul></li></ul><div class="tea-version"><p>version: 0.0.1</p><p>Built with <a href="https://github.com/lisniuse/teadocs" target="_blank">Teadocs</a></p></div></div><div class="tea-content"><div class="tea-nav"><h3 class="top-title" style="font-weight:500;margin:0;font-size:16px"><i class="fa fa-navicon" aria-hidden="true"></i> <span>SpringBoot</span></h3><div class="article-meta"></div></div><div class="tea-container"><article class="markdown-body"><h3 id="spring优缺点"><a href="#spring优缺点" class="header-anchor">#</a> <span>spring优缺点</span></h3><p>优点: 轻量化实现EJB。<br>缺点：配置太繁琐<br>SpringBoot简化了繁琐的配置，使开发的精力集中于业务逻辑代码的编写。<br>SpringBoot不是对Spring功能的增强，而是提供了一个快速使用Spring的方式。</p><h3 id="SpringBoot环境搭建"><a href="#SpringBoot环境搭建" class="header-anchor">#</a> <span>SpringBoot环境搭建</span></h3><p>创建一个module类型的maven工程。</p><p>pom.xml中配置<br>SpringBoot要求，项目要继承SpringBoot的起步依赖spring-boot-starter-parent</p><pre class="prettyprint"><code>  &lt;parent&gt;
     &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
     &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
     &lt;version&gt;2.0.1.RELEASE&lt;/version&gt;
@@ -205,7 +205,229 @@ log.info("输出信息");
 //日志中输出变量的方法
 log.info("name:"+name);
 或者
-log.info("name:{}",name);</code></pre><p>Logback的配置（application.yml中配置，可区分info和erro,xml可配置定期产生日志）</p><p>logging:<br>pattern:<br>console: "%d - %msg%n" //日志格式，输出时间-内容-换行<br>file: /var/log/tomcat/sell.log //输出日志的文件<br>level: info //输出日志级别（info及其级别以上的都会被输出）</p><p><code></code></p></article><div class="page"><a class="page-prev" href="/java/mybatis.html"><i class="fa fa-arrow-left" aria-hidden="true"></i> mybatis </a><a class="page-next" href="/java/annotation.html">annotation <i class="fa fa-arrow-right" aria-hidden="true"></i></a></div><div class="toc"><ul class="toc-affix"><li class="toc-item text-elli" style="padding-left:15px" data-link="spring优缺点"><a href="#spring优缺点" title="spring优缺点">spring优缺点</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot环境搭建"><a href="#SpringBoot环境搭建" title="SpringBoot环境搭建">SpringBoot环境搭建</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot工程热部署"><a href="#SpringBoot工程热部署" title="SpringBoot工程热部署">SpringBoot工程热部署</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot配置文件"><a href="#SpringBoot配置文件" title="SpringBoot配置文件">SpringBoot配置文件</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot集成"><a href="#SpringBoot集成" title="SpringBoot集成">SpringBoot集成</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="集成Junit"><a href="#集成Junit" title="集成Junit">集成Junit</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="Spring-Data-JPA集成"><a href="#Spring-Data-JPA集成" title="Spring Data JPA集成">Spring Data JPA集成</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot集成Redis"><a href="#SpringBoot集成Redis" title="SpringBoot集成Redis">SpringBoot集成Redis</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="日志使用"><a href="#日志使用" title="日志使用">日志使用</a></li></ul></div></div></div><i class="fa fa-arrow-circle-up gotop" aria-hidden="true"></i><div id="menu-mask"></div></div><script src="/data.js"></script><script src="/static/js/main.js"></script><script src="/static/js/mobile.js"></script>
+log.info("name:{}",name);</code></pre><p>Logback的配置（application.yml中配置，可区分info和erro,xml可配置定期产生日志）</p><p>logging:<br>pattern:<br>console: "%d - %msg%n" //日志格式，输出时间-内容-换行<br>file: /var/log/tomcat/sell.log //输出日志的文件<br>level: info //输出日志级别（info及其级别以上的都会被输出）</p><h3 id="表单验证及参数接受"><a href="#表单验证及参数接受" class="header-anchor">#</a> <span>表单验证及参数接受</span></h3><p>接收参数的几种方式</p><pre class="prettyprint"><code>//此为接收Girl对象的各个属性
+publiuc addGirl(
+  @RequestParam('age') Integer age,
+  @RequestParam('sex') String sex
+){
+
+}
+//接收一个Girl对象
+public addGirl(Girl girl){
+
+}</code></pre><p>验证表单中字段合法性<br>实体类中加入限制注解</p><pre class="prettyprint"><code>@Entity
+public class Girl(){
+  //例如对年龄进行限制
+  @Min(value=18,message="未成年人禁止入内")
+  private Integer age;
+}
+//在controller方法中
+public Girl addGirl(@Valid Girl girl, BindingResult bindingResult){
+    //对girl字段做验证，验证结果在bindingResult中
+    //判断是否严重通过
+    if(bindingResult.hasErrors){
+      System.out.pringln(bindingResult.getFieldError().getDefaultMessage();
+      return null;
+    }
+}</code></pre><h3 id="使用AOP处理请求"><a href="#使用AOP处理请求" class="header-anchor">#</a> <span>使用AOP处理请求</span></h3><p>pom.xml中添加依赖<br><dependency><br><groupid>org.springframework.boot</groupid><br><artifactid>spring-boot-starter-aop</artifactid><br></dependency><br>//新建切面类</p><pre class="prettyprint"><code>@Component
+@Aspect
+public HttpAspect(){
+  pravite final static logger = loggerFactory.getLogger(HttpAspect.class);
+  @Before("execution(public * com.scxgo.myproject.addGirl(..))")
+  //两点的意思是无论该方法的参数是什么都适用，就是addGirl所有的重载方法。
+  //@Before是方法执行之前,执行切面中的方法,@After是在方法执行完之后执行切面中方法。
+  public void doBeforMethod(){
+    logger.info("方法执行前的操作")
+  }
+}
+
+//excution内容每次都要重复写，可以统一定义
+@Pointcut("execution(public * com.scxgo.myproject.addGirl(..))")
+public void log(){}
+//然后before这样写就行了
+@Before("log()")
+public void doBefore(){}</code></pre><h3 id="统一异常处理"><a href="#统一异常处理" class="header-anchor">#</a> <span>统一异常处理</span></h3><p>1.定义返回的最外层对象Result</p><pre class="prettyprint"><code>public class Result&lt;T&gt;{
+  private Integer code;
+  private String msg;
+  private T data;
+  //后面为getter,setter方法
+}</code></pre><p>2.定义一个工具类，优化重复代码<br>public class ResultUtil{<br>//成功的时候调用<br>public static Result success(Object data){<br>Result result = new Result();<br>result.setCode(1);<br>result.setMessage("成功");<br>result.setData(data);<br>return result<br>}<br>//有时候成功的时候并不需要返回数据，再写一个成功的重载方法<br>public static Result success(){<br>return success(null);<br>}<br>//失败的时候调用<br>public static Result error(Integer code, String msg){<br>Result result = new Result();<br>result.setMsg(msg);<br>result.setCode(code);<br>return result;<br>}<br>}</p><p>3.新建一个异常捕获类</p><pre class="prettyprint"><code>@controllerAdvice
+public class ExceptionHandle{
+  @ExceptionHandler(Exception.class)
+  @ResponseBody
+  public Result handle(Exception e){
+    return ResultUtil.error(0,e.getMessage());
+  }
+}
+
+//@ControllerAdvice注解的三个作用
+springMVC中的功能，springboot中可以直接使用
+//1.全局异常处理
+//2.全局数据绑定
+//3.全局数据预处理
+@ExceptionHandler注解指定处理哪一类异常，这里是所有异常类型。
+@ResponseBody 因为会返回类似json格式的数据到前端，此类上没有RestController注解。
+</code></pre><p>4.定义自己的异常类</p><pre class="prettyprint"><code>public class GirlException extends RunTimeException{
+  private Integer Code;
+  //构造函数
+  public GirlException(Integer code, String message){
+    supper(message);
+    this.code = code;
+  }
+
+  //下面为code的getter,setter方法
+}
+
+//此时异常捕获类可改写成
+@controllerAdvice
+public class ExceptionHandle{
+  @ExceptionHandler(Exception.class)
+  @ResponseBody
+  public Result handle(Exception e){
+    if(e instanceOf GirlException){
+      GirlException girlException = (GirlException) e;
+      return ResultUtil.error(girlException.getCode(),girlException.getMessage());
+    }
+    return ResultUtil.error(0,e.getMessage());
+  }
+}
+//代码中抛出异常时候可以 throw new GirlException(100,"...出错了");
+</code></pre><p>5.定义一个枚举类型来管理code和msg的对应关系，可统一维护code和msg</p><pre class="prettyprint"><code>public enum ResultEnum{
+  UNKONUL_ERROR(-1,"未知错误"),
+  SUCCESS(1,"成功");
+
+
+
+  private Integer code;
+  private String msg;
+  public ResultEnum(Integer code,String msg){
+    this.code = code;
+    this.msg = msg;
+  }
+  //下面为getter方法，枚举不需要setter方法
+
+  此时抛出错误时候直接用枚举代替code和msg,自定义异常类应该改成如下：
+  public class GirlException extends RunTimeException{
+    private Integer Code;
+    //构造函数
+    public GirlException(ResultEnum resultEnum){
+      supper(resultEnum.getMsg());
+      this.code = resultEnum.getCode();
+    }
+
+    //下面为code的getter,setter方法
+  }
+
+</code></pre><p>}</p><h3 id="分布式系统下的session"><a href="#分布式系统下的session" class="header-anchor">#</a> <span>分布式系统下的session</span></h3><p>分布式系统集群是紧密相关的，但是完全不同的概念。<br>分布式是指拥有多个节点，各个几点之间通过消息通信。<br>集群是指同一类节点有多个，担任同一功能，是为了分担任务，减少压力。</p><h3 id="mabatis注解使用"><a href="#mabatis注解使用" class="header-anchor">#</a> <span>mabatis注解使用</span></h3><p>pom.xml引入起步依赖<br><dependency><br><groupid>org.mybatis.spring.boot</groupid><br><artifactid>mybatis-spring-boot-starter</artifactid><br></dependency><br>新建实体类（省略），新建对应的mapper。</p><pre class="prettyprint"><code>//以新增为例
+public interface ProductCategoryMapper{
+  @Insert("insert into product_category (category_name,category_type) values(#{category_name, jdbcType=VARCHAR},#{category_type,jdbcType=INTEGER})")
+  int insertByMap(Map&lt;String,Object&gt; map);
+  //参数可以用Map也可以用对象，例如ProductCategory
+}
+
+//此时需要在启动类上配置MapperScan,启动时会扫描该mapper
+@MapperScan(basePackages="com.imooc.dataobject.mapper")
+
+//使用的时候（单元测试为例）
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@Slf4j
+public class mybatisTest{
+  @Autowired
+  private ProductCategoryMapper mapper;
+  @Test
+  public void insertTest(){
+    Map&lt;String,Object&gt; map = new HashMap&lt;&gt;();
+    map.put("category_name","男生最爱");  
+    map.put("category_type","101");  
+    mapper.insertByMap(map);
+  }
+}
+
+//如果需要返回的结果对应成实体类名称，可以这样做
+@Select("select * from product_category where category_type = #{categoryType}")
+@Results({
+    @Result(column="category_type",property="categoryType"),
+    @Result(column="category_name",property="categoryName")
+})
+ProductCategory findBycategoryType(Integer categoryType);
+</code></pre><h3 id="websocket"><a href="#websocket" class="header-anchor">#</a> <span>websocket</span></h3><pre class="prettyprint"><code>pom.xml中引入websocket起步依赖
+&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-websocket&lt;/artifactId&gt;
+&lt;/dependency&gt;
+//客户端
+  let websocket = null;
+  if('Websocket' in window){
+    websocket =  new Websocket('ws://...');
+  }else{
+    alert("该浏览器不支持websocket");
+  }
+ websocket.onopen = function(event){
+   console.log("建立连接")
+ }
+ websocket.onclose = function(event){
+   console.log("关闭连接")
+ }
+ websocket.onmessage = function(evnet){
+   console.log("收到消息"+event.data)
+ }
+ websocket.onerror = funciton(){
+   alert("websocket通信发生错误")
+ }
+ window.onbeforeunload = function(){
+   websocket.close();
+   console.log("窗口关闭，关闭websocket连接")
+ }
+
+ //后端
+ //写个websocket配置类
+
+ @Compoennt
+ public class WebsocketConfig{
+   @Bean
+   public ServerEndpointExporter serverEndpointExporter{
+     return new ServerEndpointExporter();
+   }
+ }
+ //写websocket组件
+ @Component
+ @ServerEndpoint("/webSocket")
+ @Slf4j
+ public class WebSocket{
+
+   private Session session;
+   private static CopyOnWriteArraySet&lt;WebSocket&gt; webSocketSet = new CopyOnWriteArraySet&lt;&gt;();
+
+   @onopen
+   public void onOpen(Session session){
+     this.session = session;
+     webSocketSet.add(this)
+     log.info("[websocket消息] 有新的连接,总数：{}",webSocketSet.size());
+   }
+
+   @OnClose
+   public void onClose(){
+     webSocketSet.remove(this);
+     log.info("断开，总数{}",webSocketSet.size());
+   }
+
+   @OnMessage
+   public void onMessage(String message){
+     log.info("收到客户端发来的消息:{}",message);
+   }
+
+   public void sendMessage(String message){
+     for(WebSocket webSocket:webSocketSet){
+       log.info("广播消息，message={}",message);
+       try{
+         webSocket.session.getBasicRemote().sendText(message);
+       } catch(Exception e){
+         e.printStackTrace();
+       }
+     }
+   }
+}</code></pre><p><code></code></p><pre class="prettyprint"><code></code></pre></article><div class="page"><a class="page-prev" href="/java/mybatis.html"><i class="fa fa-arrow-left" aria-hidden="true"></i> mybatis </a><a class="page-next" href="/java/annotation.html">annotation <i class="fa fa-arrow-right" aria-hidden="true"></i></a></div><div class="toc"><ul class="toc-affix"><li class="toc-item text-elli" style="padding-left:15px" data-link="spring优缺点"><a href="#spring优缺点" title="spring优缺点">spring优缺点</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot环境搭建"><a href="#SpringBoot环境搭建" title="SpringBoot环境搭建">SpringBoot环境搭建</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot工程热部署"><a href="#SpringBoot工程热部署" title="SpringBoot工程热部署">SpringBoot工程热部署</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot配置文件"><a href="#SpringBoot配置文件" title="SpringBoot配置文件">SpringBoot配置文件</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot集成"><a href="#SpringBoot集成" title="SpringBoot集成">SpringBoot集成</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="集成Junit"><a href="#集成Junit" title="集成Junit">集成Junit</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="Spring-Data-JPA集成"><a href="#Spring-Data-JPA集成" title="Spring Data JPA集成">Spring Data JPA集成</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="SpringBoot集成Redis"><a href="#SpringBoot集成Redis" title="SpringBoot集成Redis">SpringBoot集成Redis</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="日志使用"><a href="#日志使用" title="日志使用">日志使用</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="表单验证及参数接受"><a href="#表单验证及参数接受" title="表单验证及参数接受">表单验证及参数接受</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="使用AOP处理请求"><a href="#使用AOP处理请求" title="使用AOP处理请求">使用AOP处理请求</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="统一异常处理"><a href="#统一异常处理" title="统一异常处理">统一异常处理</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="分布式系统下的session"><a href="#分布式系统下的session" title="分布式系统下的session">分布式系统下的session</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="mabatis注解使用"><a href="#mabatis注解使用" title="mabatis注解使用">mabatis注解使用</a></li><li class="toc-item text-elli" style="padding-left:15px" data-link="websocket"><a href="#websocket" title="websocket">websocket</a></li></ul></div></div></div><i class="fa fa-arrow-circle-up gotop" aria-hidden="true"></i><div id="menu-mask"></div></div><script src="/data.js"></script><script src="/static/js/main.js"></script><script src="/static/js/mobile.js"></script>
 <script src="/__webscoket__/socket.io.js"></script>
 <script src="/__webscoket__/socket.client.js"></script>
 </body></html>
