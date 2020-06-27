@@ -436,6 +436,28 @@ public Girl addGirl(@Valid Girl girl, BindingResult bindingResult){
     }
 }
 ```
+### http请求及参数获取
+post请求提交数据有四种常见方式：
+
+1.application/x-www-form-urlencoded
+  浏览器的原生 <form> 表单,其中ajax也是用这种方式提交的
+2.multipart/form-data
+  表单上传文件用的这种提交方式
+3.application/json
+  这种提交方式的消息主体是一个json字符串
+4.text/xml
+  消息主体是XML格式的内容
+就收参数的方法主要有三种
+|注解|支持类型|支持的请求类型|支持的Content-Type|请求示例|
+|@PathVariable|url|Get|all|/orders/{id}|
+|@RequestParam|url|Get|all|/orders?name=abc|
+|@RequestParam|Body|Post/Put/Delete/Patch|form-data,x-www.form-urlencoded| {id:"1",name:"abc"}|
+|@RequestBody|Body|Post/Put/Delete/Patch|json|{"id":"1","name":"adc"}|
+
+
+
+
+
 
 ### 使用AOP处理请求
 pom.xml中添加依赖
