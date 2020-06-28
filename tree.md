@@ -18,6 +18,7 @@
     - [登录验证方式](/java/login)
 - +微信小程序
     - [微信小程序](/wechat/wechat)
+    - [微信授权及支付](/wechat/wxtrade)
 - +Bash脚本
     - [简介](/bash/introduce)
 - +git
@@ -25,5 +26,6 @@
 - +运维
     - [docker](/ops/docker)
     - [nginx](/ops/nginx)
+    - [linux](/ops/linux)
 - +正则
     - [正则](/regexp/regexp)

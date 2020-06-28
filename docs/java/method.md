@@ -32,3 +32,7 @@ orElse()、 orElseGet() 和 orElseThrow()
 ```
 BeanUtils.copyProperties(Obj1,Obj2);
 ```
+### lamda流式操作
+List<Integer> categoryTypeList = productInfoList.stream()
+.map(e->e.getCategoryType())
+.collect(Collectors.toList());

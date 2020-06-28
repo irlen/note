@@ -142,8 +142,8 @@ adduser -r -c 'git version control' -d /home/irlen -m irlen
 进入home/irlen(irlen账户的家目录)。
 4.设置密码为irlen
 passwd irlen
-这时候可以在主目录中建文件夹indus.git，进入indus.git 使用git init初始化目录,
-进入.git文件加，vim  config 在最后加上denyCurrentBranch = ignore
+这时候可以在主目录中建文件夹indus.git，进入indus.git 使用git init --bare 初始化目录,
+进入.git文件夹，vim  config 在最后加上denyCurrentBranch = ignore
 
 5.本地连接远程私服
 git remote add origin git@10.0.0.99:/home/irlen/indus.git
