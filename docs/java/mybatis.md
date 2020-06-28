@@ -81,5 +81,29 @@ public interface UserMapper {
   int deleteUser(String userName);
 }
 ```
+如果想打印出sql语句，可以利用日志，在application.yml中配置
+logging:
+  level:
+    com.imooc.dataobject.mapper: trace //mapper文件的路径
+
 最后可以像springDataJPA一样分层
 mapper->dao->service
+
+
+###整合c3p0
+
+引入依赖
+```
+  <dependency>
+    <groupId>com.mchange</groupId>
+    <artifactId>c3p0</artifactId>
+    <version>0.9.5.5</version>
+  </dependency>
+
+```
+在application.yml中配置
+```
+spring:
+  datasource:
+    type: com.mchange.v2.c3p0.ComboPooledDataSource
+```

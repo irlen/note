@@ -475,6 +475,7 @@ public class Result<T>{
 }
 ```
 2.定义一个工具类，优化重复代码
+```
 public class ResultUtil{
   //成功的时候调用
   public static Result success(Object data){
@@ -496,7 +497,7 @@ public class ResultUtil{
     return result;
   }
 }
-
+```
 3.新建一个异常捕获类
 ```
 @controllerAdvice
@@ -523,7 +524,7 @@ public class GirlException extends RunTimeException{
   private Integer Code;
   //构造函数
   public GirlException(Integer code, String message){
-    supper(message);
+    super(message);
     this.code = code;
   }
 
@@ -556,7 +557,8 @@ public enum ResultEnum{
 
   private Integer code;
   private String msg;
-  public ResultEnum(Integer code,String msg){
+  //枚举类的构造函数不能有public修饰符，注意枚举类不能派生子类（类的默认修饰符为final),构造函数默认修饰符为private,无需再添加
+  ResultEnum(Integer code,String msg){
     this.code = code;
     this.msg = msg;
   }
@@ -576,7 +578,7 @@ public enum ResultEnum{
 
 
   ```
-}
+
 
 ### 分布式系统下的session
 分布式系统集群是紧密相关的，但是完全不同的概念。
