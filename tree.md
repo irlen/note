@@ -5,6 +5,8 @@
     - vue
         - [vue工程](/front/vue/project)
         - [vue基础语法](/front/vue/vuebase)
+    - api
+        -[原生api](/front/api)
 - +移动端
     - [react-native](/mobile/reactnative)
 - +数据库
@@ -16,6 +18,9 @@
     - [常用方法](/java/method)
     - [常用api](/java/api)
     - [登录验证方式](/java/login)
+    - [io](/java/io)
+- +python
+    - [爬虫](/python/spy)
 - +微信小程序
     - [微信小程序](/wechat/wechat)
     - [微信授权及支付](/wechat/wxtrade)

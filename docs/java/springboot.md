@@ -402,7 +402,7 @@ logging:
     file: /var/log/tomcat/sell.log //输出日志的文件
     level: info  //输出日志级别（info及其级别以上的都会被输出）
 
-### 表单验证及参数接受
+### 表单验证及参数接收
 接收参数的几种方式
 ```
 //此为接收Girl对象的各个属性
@@ -448,11 +448,12 @@ post请求提交数据有四种常见方式：
 4.text/xml
   消息主体是XML格式的内容
 就收参数的方法主要有三种
-|注解|支持类型|支持的请求类型|支持的Content-Type|请求示例|
-|@PathVariable|url|Get|all|/orders/{id}|
-|@RequestParam|url|Get|all|/orders?name=abc|
-|@RequestParam|Body|Post/Put/Delete/Patch|form-data,x-www.form-urlencoded| {id:"1",name:"abc"}|
-|@RequestBody|Body|Post/Put/Delete/Patch|json|{"id":"1","name":"adc"}|
+注解|支持类型|支持的请求类型|支持的Content-Type|请求示例
+---|:--:|:--:|:--:|---:
+@PathVariable|url|Get|all|/orders/{id}
+@RequestParam|url|Get|all|/orders?name=abc
+@RequestParam|Body|Post/Put/Delete/Patch|form-data,x-www.form-urlencoded| {id:"1",name:"abc"}
+@RequestBody|Body|Post/Put/Delete/Patch|json|{"id":"1","name":"adc"}
 
 
 

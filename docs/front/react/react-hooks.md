@@ -71,11 +71,40 @@ function xxx(){
   )
 }
 ```
+useRef,useImperativeHandle,forwardRef结合使用
 
-useRef 接收一个初始值，返回一个可变的ref对象，ref.current指向初始化的值。它可以指向别的值。
-由于是函数组件，this不再指向这个组件，所以要达到class组件中实例变量的效果，可以通过useRef来实现。
-如果你的 effect 返回一个函数，React 将会在执行清除操作时调用它：
-为什么 effect 的清除阶段在每次重新渲染时都会执行，而不是只在卸载组件的时候执行一次。让我们看一个实际的例子，看看为什么这个设计可以帮助我们创建 bug 更少的组件。
+useRef：返回一个可变的 ref 对象，其current属性被初始化为传入的参数，返回的ref对象在组件的整个生命周期内保持不变。
+forwordRef: 引用父组件的ref实例，成为子组件的一个参数，可以引用父组件的ref绑定到子组件自身的节点上。
+useImperativeHandle: 第一个参数，接收一个通过forwordRef引用父组件的ref实例，第二个参数是一个回调函数，返回一个对象，对象里存储需要暴露个父组件的属性或者方法。
+完整例子：
+```
+function FatherCom(props){
+  const childRef = useRef(null);
+  useEffect(()=>{
+    //调用子组件暴露出来的方法
+    ref.current.forFatherUse();
+  },[])
+  return (
+    <ChildCom ref={childRef} />
+    )
+}
+
+function ChildCom(ref,props){
+  funciton forFatherUse(){
+    return "供父组件调用"
+  }
+  useImperativeHandle(ref,()=>({
+    //暴露给父组件方法
+    forFatherUse: forFatherUse
+  }))
+  return (
+    <div>我是子组件</div>
+    )
+}
+//将ref作为参数传入子组件
+export default forwordRef(ChildCom)
+```
+
 
 
 ### 4.useContext
@@ -107,11 +136,29 @@ const handleChange =useCallback (()=>{
 ```
 
 
-### 8.useMemo
-useMomo用来缓存一个复杂的计算值，useCallback(fn,deps)等价于useMomo(()=>fn,deps)。如果通过一个输入得到一个值需要经过复杂的计算，那么下次同样的输入再进行一遍同样复杂的计算是没有必要的。这就是useMemo的意义。
-const result = useMemo(()=>computedExpensiveValue(40),[count]);
-const result = computedExpensiveValue(40);
-重新计算result的时候，如果count值没变，就直接从缓存里面读取，避免性能消耗。
+### 8.useMemo,memo,useCallback
+momo类似于PureComponent，作用是优化组件性能，防止组件触发重渲染。
+memo针对一个组件的渲染是否重复执行。
+
+useMomo针对一段函数逻辑是否重复执行
+```
+useMemo(()=>{},[])
+如果参数是空数组的话，就只会执行一次
+```
+与useEffect不同的是，useMemo是在渲染期间完成，useEffect是在渲染之后完成的。
+
+useCallback
+useMemo(()=>{fn}) 等价于 useCallback(fn)
+
+对useCallback、useMemo简单的介绍（官方解释）
+useCallback:把内联回调函数及依赖项数组作为参数传入 useCallback，它将返回该回调函数的 memoized 版本，该回调函数仅在某个依赖项改变时才会更新。当你把回调函数传递给经过优化的并使用引用相等性去避免非必要渲染（例如 shouldComponentUpdate）的子组件时，它将非常有用。
+useMemo:把“创建”函数和依赖项数组作为参数传入 useMemo，它仅会在某个依赖项改变时才重新计算 memoized 值。这种优化有助于避免在每次渲染时都进行高开销的计算。
+两个都是返回一个memoized，同时具备第二个参数依赖项，第二个参数的情况和useEffect类似，但是useCallback往往使用于传递给子组件的函数的优化，useMemo使用于数据的优化
+
+总结： memo 针对组件，避免对组件不必要的渲染
+useMemo 针对数据，对于依赖参数计算的复杂数据，如果参数不变，避免不必要的重复计算
+useCallback 针对函数，对于依赖参数执行的函数，如果依赖不变，避免函数重复初始化，每次传给子组件的函数都是同一个，这样子组件不会因为这个函数不同而重复渲染。
+用法总结：在子组件不需要父组件的值和函数的情况下，只需要使用memo函数包裹子组件即可。而在使用值和函数的情况，需要考虑有没有函数传递给子组件使用useCallback，值有没有所依赖的依赖项而使用useMemo,而不是盲目使用这些hooks等
 
 9.useDebugValue
 
