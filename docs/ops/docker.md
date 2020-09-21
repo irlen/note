@@ -49,6 +49,11 @@ vim /etc/docker/daemon.json
   "registry-mirrors":["https://docker.mirrors.ustc.edu.cn"]
 }
 ```
+###配置docker加速器
+到daocloud官网注册账号
+linux配置docker镜像站
+curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s http://f1361db2.m.daocloud.io
+
 
 ### docker的启动和停止
 
@@ -69,10 +74,14 @@ systemctl stop docker
     docker images
 
   //搜索某个镜像
-    docker search centos  
+    docker search centos 
 
   //拉取镜像
     docker pull tutum/centos
+  //导入导出镜像
+  导出： docker save java > /home/java.tar.gz
+  导入： docker load < /home/java.tar.gz
+  docker images 查看
 
   //删除镜像（按照ID或者名称都可以，如果镜像有相应容器运行，则该镜像无法删除）
     docker rmi 镜像ID或者名称
@@ -99,10 +108,11 @@ systemctl stop docker
 
          -v: 表示目录映射关系（前者是宿主机目录，后者是映射到宿主机上的目录），可以使用多个-v做多个目录和文件的映射。
          注意：最好做目录映射，在宿主机上做修改，然后共享到容器上。
+         --privileged  此参数表示对映射目录具有最高权限，可读写等操作
 
          -d: (daemons 守护进程) 在run后面加上-d参数，则会创建一个守护式容器在后台运行（这样创建容器后不会自动登录容器，如果只加-i -t两个参数，创建后就会自动进去容器）。
 
-         -p: (port) 表示端口映射，前者宿主机端口，后者是容器内的映射端口。可以使用多个-p做多个端口映射；
+         -p: (port) 表示端口映射，前者宿主机端口，后者是容器的端口。可以使用多个-p做多个端口映射，如-p 9000:8000  -p 9001:8085,映射两组端口
          (1)交互式运行一个容器
          docker run -it --name=centos 镜像名:镜像标签  /bin/bash(表示使用bash脚本命令进行交互)
          此时，容器运行，光标所在环境为容器环境。
@@ -122,7 +132,7 @@ systemctl stop docker
 ```
 启动容器
 ```
-docker start mycentos2
+docker start -i mycentos2
 ```
 查看容器信息
 ```

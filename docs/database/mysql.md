@@ -120,3 +120,39 @@ where
 group by
 having  分组后带有条件只能使用having
 order by 它必须放到最后面
+
+### mysql数据库集群
+选择PXC方案
+创建集群
+
+Docker的镜像仓库充包含了PXC数据库的镜像，下载即可
+https://hub.docker.com/r/percona/percona-xtradb-cluster/
+docker pull percona/percona-xtradb-cluster
+
+出于安全考虑，需要给PXC集群实例创建Docker内部网络，外部是无法访问的，可以给外部映射端口
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+...
