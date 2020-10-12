@@ -1,79 +1,55 @@
 ### 爬虫
-### urllib.request   (python3中)
-urllib.request是Python3自带模块。
-基本使用
-```
-import  urllib.request
-response = urllib.request.urlopen("http://www.baidu.com/")
-print(response.read())
+### 使用第三方模块requests
+pip install requests
+url_temp = "https://www.baidu.com/s?"
+headers = {...}
+response = requests.get(url_temp,headers=headers)
 
-```
-此种用法不能构造请求的参数，构造请求参数需要使用urllib.request.Requst对象
-```
-request = urllib.request.Request("http://www.baidu.com/")
-request.add_header("Connection", "keep-alive")
-response = urllib.request.urlopen(request)
-Request实例除了必须有url参数之外，还可以有额外两个参数，data,header。
-data: 如果请求为GET，则默认为空
-header: 是一个字典，包含发送http请求的键值对
-```
-构造一个带参数的GET请求
-url参数是一个字典
-```  
-base_url='http://www.yundama.com/index/login'
-data_dict={
-    "username":"1313131",
-    "password":"13221321",
-    "utype":"1",
-    "vcode":"2132312"
+## requests 发送 post 请求
+
+response  = requests.post("https://wwww.baidu.com/",data=data,headers=headers)
+data格式为字典
+
+## requests 使用代理
+
+response = requests.get("http://www.baidu.com",proxies=proxies)
+proxies的形式： 字典
+proxies = {
+  "http":"http://12.34.56.79:9527",
+  "https":"https://12.34.56.79:9527"
 }
-data_string = urllib.parse.urlencode(data_dict)
-new_url = base_url+"?"+data_string
-response = urllib.request.urlopen(new_url)
-print(response.read().decode('utf-8'))
-```
-构造一个带参数的POST请求
-```
-import urllib.request
-import urllib.parse
+使用的代理的原因：让服务器以为不是同一个客户端在请求，防止我们的真实地址被泄露，防止被追究;
 
-data_dict = {
-  "username":"zhangsan",
-  "password":"123456"
-}
-#使用urlencode将字典参数序列化成字符串
-data_string = urllib.parse.urlencode(data_dict)
-#将序列化后的字符串转换成二进制数据，因为post请求携带的是二进制参数
-last_data = bytes(data_string,encoding='utf-8')
-#如果urlopen这个函数传递了data这个参数，那么它的请求方式则不是get请求，而是post请求
-response = urllib.request.urlopen("http://baidu.com",data=last_data)
-print(response.read().decode("utf-8"))
+## requests 模拟登陆的三种方式
+requests 提供了一个session类，来实现客户端和服务端的会话保持
+1.实例化一个session对象
+2.让session发送get或者post请求
+session = requests.session()
+response = session.get(url,headers=headers)
+也可以直接将cookie放在headers里面直接使用，这时候使用requests.get(url,headers)或者requests.get(url,headers,cookie)就可以访问。
+requests中解决编码的方法
+response.content.decode()
+response.content.decode("gbk")
+response.text
 
-```
+## requests 小技巧
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+1. 把cookie对象转化为字典
+  requests.util.dict_from_cookiejar
+2. url地址解码
+  requests.util.unquote("http://%3aq348iad%alfj")
+  quote为编码
+3. 请求SSL证书验证
+  response =  requests.get("https://www.12306.cn/mormhweb/",verify=False)
+4. 设置超时
+  response = requests.get(url,timeout=10)
+5. 配合状态码判断是否请求成功
+  assert response.status_code == 200
+retrying 模块可以在报错的时候重复尝试
+from retrying import retry
+@retry(stop_max_attempt_number=3)
+def haha():
+  pass
 
 
 ...
