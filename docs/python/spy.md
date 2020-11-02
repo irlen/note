@@ -33,7 +33,7 @@ response.content.decode("gbk")
 response.text
 
 ## requests 小技巧
-
+robot.txt为爬虫协议文件
 1. 把cookie对象转化为字典
   requests.util.dict_from_cookiejar
 2. url地址解码
@@ -226,15 +226,19 @@ rules = (
     Rule( LinkExtactor(allow=r"web/site0/info\d+\.html"), callback="parse_item", follow= True )
 )
 
-### scrapy模拟登陆
+### scrapy携带cookie模拟登陆
 ```
 settings中设置
 #COOKIES_ENABLED = False ->cookie在setting中默认是开启的
 COOKIES_DEBUG= True 控制台可看到cookie在不通的解析函数中传递，第一次携带之后，不用每次请求都携带cookie
-
-def start_request(def):
-  pass
-
+*在spider中重写start_requests覆盖默认，可以对start_url做一些包装*
+def start_requests(self):
+  yield scrapy.Request(
+    self.start_url[0],
+    callback=self.parse,
+    cookies=cookies *cookies为字典格式*
+  )
+settings中打开COOKIES_DEBUG = True可以查看cookie在各个请求之间的传递
 ```  
 
 ### 下载中间件
@@ -297,7 +301,12 @@ redis为内存数据库
   zRANGE myset 0 -1 *遍历zset*
   ZCARD myzset *返回元素的数量*
 
+settings中的配置
+DUPEFILTER_CARSS = "scrapy_redis.dupefilter.RFPDupeFilter" *指定哪个方法给request去重*
+SCHEDULER = "scrapy_redus.scheduler.Scheduler" *指定scheduler队列*
+SCHEDULER_PERSIST = TRUE *队列中的内容是否持久保存，为False的时候关闭redis的时候会清空redis*
 
+REDIS_URL = "redis://127.0.0.1:63379" *指定redis的地址*
 
 
 
