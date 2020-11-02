@@ -5,13 +5,10 @@
     - vue
         - [vue工程](/front/vue/project)
         - [vue基础语法](/front/vue/vuebase)
-<<<<<<< HEAD
     - api
-        -[原生api](/front/api)
-=======
+        - [原生api](/front/api)
     - electron
         - [electron](/front/electron/electron)
->>>>>>> eab8e4a3de9ef1eaf4b5227164a66b955dabd049
 - +移动端
     - [react-native](/mobile/reactnative)
 - +数据库
