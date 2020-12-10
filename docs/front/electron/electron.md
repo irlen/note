@@ -256,13 +256,7 @@ music 用户音乐目录的路径.
 pictures 用户图片目录的路径.
 videos 用户视频目录的路径.
 
-
 ###菜单dialog,上下文菜单和原生菜单
-
-
-
-
-
 渲染进程和主进程通信主要是用 remote调用electron api，使用window.require调用nodejs模块
 
 
@@ -271,6 +265,7 @@ videos 用户视频目录的路径.
 
 ### electron打包相关
 选择使用electron-builder打包
+官方文档：https://www.electron.build/
 
 ```
 cnpm install electron-builder --save-dev
@@ -315,7 +310,7 @@ create-react-app打包出来的文件放在build中，而electron-build在打包
     "./src/utils/QiniuManager.js"
   ]
 }
-
+注： **是匹配所有层级
 ```
 绝对路径改成相对路径
 ```
@@ -330,12 +325,26 @@ asar  extract app.asar  ./app
 
 ### 生成安装包
 
-package.json中配置
+package.json中配置，在build字段下
 "directories":{
   //告诉electron一些静态图片资源放到assets文件夹了
   "buildResources": "assets"
 }
 
+注：electron 和 electron-builder要放在devDependencies里面。
+electron-builder 在打包时会检测cache中是否有electron 包，如果没有的话会从github上拉去，在国内网络环境中拉取的过程大概率会失败，所以你可以自己去下载一个包放到cache目录里
+各个平台的目录地址
+```
+  Linux: $XDG_CACHE_HOME or ~/.cache/electron/
+
+  MacOS: ~/Library/Caches/electron/  
+  //下载地址
+   https://github.com/electron/electron/releases/download/v8.0.0/electron-v8.0.0-darwin-x64.zip
+
+  Windows: %LOCALAPPDATA%/electron/Cache or ~/AppData/Local/electron/Cache/`
+  //下载地址
+  https://github.com/electron/electron/releases/download/v10.1.5/electron-v10.1.5-win32-x64.zip
+```
 //mac的配置
 ```
 "mac":{
@@ -387,13 +396,13 @@ dmg是mac系统的一种安装文件格式
 
 
 ### 安装包的体积优化
-因为electron打包的时候不会打包dev-dependencies文件,所以将dependencies中的不需要使用的依赖全部放到dev-dependencies中，这样可以减小打包体积。
+因为electron打包的时候不会打包dev-dependencies文件,所以将dependencies中的不需要使用的依赖全部放到dev-dependencies中，（即dependencies中只放main.js需要使用的包以及react中window.require方式引入的包，其他的包其实在build的时候已经打包过，所以都放到devDependencies中就行了）这样可以减小打包体积。
 新建配置文件webpack.config.js，解决main.js中引入的文件打包时候还需在build字段中配置的问题。
 
 const path = require("path");
 //这个只是用来打包main.js到build文件夹
 module.exports = {
-  target: 'electron-main',
+  target: 'electron-main', //一般为node或者web，这里使用electron-main,webpack会更具目标类型做一些特殊的处理
   entry: './main.js',
   output: {
     path: path.resolve(__dirname,'./build'),
@@ -405,7 +414,7 @@ module.exports = {
 }
 
 在scripts中添加这个打包命令...
-  "buildMain":"webpack"
+  "buildMain":"webpack" //webpack会自己去找webpack.config.js配置文件
 }
 
 此时，build字段中files字段配置的main.js引入的自定义文件就不需要手动引入了，可以删除。
@@ -414,13 +423,15 @@ module.exports = {
   "main": "./build/main.js"
 }
 
+在prepack和predist命令中加上 buildMain
+
 
 ### 自动更新
 1.打包时自动发不到github
 package.json中配置
 "version":"1.0.0", ***根据version判断是否需要更新
-"publish":["github"], ***使用github平台
-scripts字段中添加一个配置命令,package的时候会自动发布一个release，不需要手动发布
+"publish":["github"], ***在win-build下添加github平台
+scripts字段中添加一个release命令,package的时候会自动发布一个release，不需要手动发布
 "release": "electron-builder"
 "prerelease":"npm run build && npm run buildMain"
 
@@ -433,7 +444,7 @@ github需要一个access token,可以到https://github.com/settings/tokens/new�
 2.客户端检测更新
 开始-检查更新-下载完成-通知用户-更新安装
 安装electron-updater
-npm install electron-updater --save-dev
+npm install electron-updater --save-dev //如果没有单独打包main.js，则要安装在dependecies里面
 在main.js中引入
 const { autoUpdater } = require('electron-updater')
 
@@ -488,6 +499,9 @@ app.on('ready',()=>{
 将autoUpdater.checkForUpdatesAndNotify()改成autoUpdater.checkForUpdates(),因为前者只有生产环境才能用
 autoUpdater.on('download-progress',(progressObj)=>{
     ***下载进度效果
+    let log_message = "Download speed:"+progressObj.bytesPerSecond;
+    log_message = log_message + '-Downloaded ' + progressObj.percent+"%"
+    console.log(log_message)
 })
 ***下载完毕后，确认安装的回调
 autoUpdater.on('update-downloaded',()=>{  
