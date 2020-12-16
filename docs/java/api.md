@@ -1,3 +1,90 @@
+
+#java基础回顾
+Java只允许一个class继承自一个类，因此，一个类有且仅有一个父类。只有Object特殊，它没有父类。
+
+继承有个特点，就是子类无法访问父类的private字段或者private方法。
+
+为了让子类可以访问父类的private字段和方法，我们需要把private 改为 protected,用protected修饰的字段和方法可以被子类访问。
+
+protected关键字可以把字段和方法的访问权限控制在继承树内部，一个protected字段和方法可以被其子类，以及子类的子类所访问
+
+在Java中，任何class的构造方法，第一行语句必须是调用父类的构造方法。如果没有明确地调用父类的构造方法，编译器会帮我们自动加一句super()，但这时候父类必须有无参数的构造方法，如果要使用父类的有参数的构造方法，需要手动调用加上参数,例如super(arg1,arg2)
+
+###关于继承权限
+正常情况下class没有final修饰符的时候，任何类都可以从该class继承。
+final类中的成员变量可以根据需要设为final，但是要注意final类中的所有成员方法都会被隐式地指定为final方法。
+final修饰方法是避免被继承类重写,类的private方法会隐式地被指定为final方法。（private方法本身不能被子类访问）。
+对于一个final变量，如果是基本数据类型的变量，则其数值一旦在初始化之后便不能更改；如果是引用类型的变量，则在对其初始化之后便不能再让其指向另一个对象。
+从Java 15开始，允许使用sealed修饰class，并通过permits明确写出能够从该class继承的子类名称。
+例如 public sealed class Shape permits Rect, Circle, Triangle{ }
+###接口
+接口是抽象类加抽象方法
+所谓interface，就是比抽象类还要抽象的纯抽象接口，因为它连字段都不能有。因为接口定义的所有方法默认都是public abstract的，所以这两个修饰符不需要写出来（写不写效果都一样）。interface就是用来被实现（implements）的。一个interface可以继承（extends）另一个interface。
+interface Person {
+    void run();
+    String getName();
+}
+在Java中，一个类只能继承自另一个类，不能从多个类继承。但是，一个类可以实现多个interface
+class Student implements Person, Hello { // 实现了两个interface }
+
+接口中可以定义default方法
+实现类可以不必覆写default方法。但实现类的实例都可以调用该方法,default方法的目的是，当我们需要给接口新增一个方法时，会涉及到修改全部子类。如果新增的是default方法，那么子类就不必全部修改，只需要在需要覆写的地方去覆写新增方法。
+
+###静态字段和静态方法
+实例字段在每个实例中都有一个自己的独立空间，但是静态字段只有一个共享空间，说以实例字段每个实例独有，互补干扰，而静态字段为所有实例共用。实例可访问并修改静态字段（通常我们直接用类去调用）。
+
+因为静态方法属于class而不属于实例，因此，静态方法内部，无法访问this变量，也无法访问实例字段，它只能访问静态字段。
+静态方法经常用于工具类。例如：
+Arrays.sort()
+Math.random()
+
+###作用域
+private关键词定义类的内外访问权限。
+定义为private的字段和方法无法被其他类访问，private访问权限被限定在class的内部。
+由于Java支持嵌套类，如果一个类内部还定义了嵌套类，那么，嵌套类拥有访问private的权限
+
+protected作用于继承关系。定义为protected的字段和方法可以被子类访问，以及子类的子类
+
+final修饰符与访问权限不冲突，用final修饰的class可以阻止被继承，用final修饰的method可以阻止别子类覆写，用final修饰的field可以阻止被重新赋值，
+被final修饰的局部变量可以阻止被重新赋值。
+局部变量
+在方法内部定义的变量称为局部变量，局部变量作用域从变量声明处开始到对应块结束，方法参数也属于局部变量。
+
+
+注：一个.java文件只能包含一个public类，但可以包含多个非public类。
+
+
+###java核心类
+  String在java中是引用类型，是不可变对象，字符串操作不改变原字符串内容，而是返回新字符串，比较两个字符串是否相同必须使用equals()方法。
+  字符串提供了formatted()方法和format()静态方法，可以传入其他参数，替换占位符，然后生成新的字符串。String s = "Hi %s, your score is %d!";
+  System.out.println(s.formatted("Alice", 80));
+  System.out.println(String.format("Hi %s, your score is %.2f!", "Bob", 59.5));
+
+  基本类型： byte, short, int, long, boolean, float, double, char。
+  引用类型： 所有class和interface类型。
+  引用类型可以赋值为null,标志空，但基本类型不能复制为null。
+  所有的包装类都是不变类。
+  int和其包装类Integer之间的转换
+  Integer n2 = new Integer(99);
+  int n3 = n2.intValue();
+  Integer之间的比较要用equals()比较，因为Integer包装类是引用类型。
+  
+### javaBean，就是样一个定义了私有属性，通过setter，getter方法操作属性，传递数据的类。
+枚举一个JavaBean的所有属性，可以直接使用Java核心库提供的Introspector。
+BeanInfo info = Introspector.getBeanInfo(Person.class);
+for (PropertyDescriptor pd : info.getPropertyDescriptors()) {
+    System.out.println(pd.getName());
+}
+
+
+
+
+
+
+
+
+
+#各种api使用
 ### Scanner类
 一个获取键盘输入到程序中的类；
 ```
