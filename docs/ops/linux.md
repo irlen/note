@@ -177,7 +177,32 @@ firewall-cmd --zone=public --add-port=3306/tcp --permanent
 ## 开启3306端口后，workbench或naivcat 就能连接到MySQL数据库了
 查看某个端口是否开启
 firewall-cmd --query-port=80/tcp
+查看所有被开启的端口
+netstat -aptn
 
+
+#关闭firewall使用iptables
+
+systemctl stop firewalld
+systemctl mask firewalld
+
+yum install iptables-services
+systemctl enable iptables
+
+systemctl [stop|start|restart] iptables
+保存防火墙规则
+service iptables save
+###使用iptables开启端口
+打开配置文件
+vim /etc/sysconfig/iptables
+添加内容
+-A INPUT -m state --state NEW -p tcp -m multiport --dport 8020,(此处添加开放的端口) -j ACCEPT
+重启服务
+service iptables restart
+
+查看某个端口是否重启,如果没显示任何内容，则未开启
+lsof i:1111
+或者 iptables -n -L 会列出iptables规则，可以看到开放的端口
 
 
 5. 重启防火墙

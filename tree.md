@@ -34,5 +34,6 @@
     - [docker](/ops/docker)
     - [nginx](/ops/nginx)
     - [linux](/ops/linux)
+    - [kafka](/ops/kafka)
 - +正则
     - [正则](/regexp/regexp)

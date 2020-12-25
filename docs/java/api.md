@@ -68,7 +68,7 @@ final修饰符与访问权限不冲突，用final修饰的class可以阻止被�
   Integer n2 = new Integer(99);
   int n3 = n2.intValue();
   Integer之间的比较要用equals()比较，因为Integer包装类是引用类型。
-  
+
 ### javaBean，就是样一个定义了私有属性，通过setter，getter方法操作属性，传递数据的类。
 枚举一个JavaBean的所有属性，可以直接使用Java核心库提供的Introspector。
 BeanInfo info = Introspector.getBeanInfo(Person.class);
@@ -76,7 +76,24 @@ for (PropertyDescriptor pd : info.getPropertyDescriptors()) {
     System.out.println(pd.getName());
 }
 
+###反射
+class是由JVM在执行过程中动态加载，当JVM加载String类时，它首先读取String.class文件到内存，然后，为String类创建一个Class实例并关联起来
+Class cls = new Class(String);(String类的class)
 
+通过Class实例获取class信息的方法称为反射，获取一个class的Class实例有三种方法。
+1.通过class的静态变量class获取。
+Class cls = String.class;
+2.如果我们有个实例变量，可以通过该实例变量提供的getClass()方法获取。
+String s = "Hello";
+Class class = s.getClass();
+3.如果知道一个class的完整（意思是连同包）类名，可以通过静态方法Class.forName()获取。
+Class  cls = Class.forName("java.lang.String");
+
+
+如果获取到了一个Class实例，我们可以通过该Class实例来创建对应类型的实例。
+Class cls = String.class;
+String s = (String)cls.newIntance();
+它的局限是：只能调用public的无参数构造方法。带参数的构造方法，或者非public的构造方法都无法通过Class.newInstance()被调用
 
 
 

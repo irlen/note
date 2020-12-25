@@ -74,7 +74,7 @@ systemctl stop docker
     docker images
 
   //搜索某个镜像
-    docker search centos 
+    docker search centos
 
   //拉取镜像
     docker pull tutum/centos
@@ -134,6 +134,27 @@ systemctl stop docker
 ```
 docker start -i mycentos2
 ```
+进入docker容器环境
+```
+docker exec -it  容器名 bash
+
+```
+docker容器中安装yum，vim，ifconfig, telnet, ping
+```
+apt-get update
+apt-get install vim -y
+apt-get install yum -y
+apt-get install  telnet -y
+apt-get install  net-tools -y //ifconfig
+apt-get install -y iputils-ping //安装Ping
+
+快速添加一个yum源
+
+yum-config-manager --add-repo http://mirrors.aliyun.com/repo/Centos-7.repo
+
+如果提示没有yum-config-manager命令，执行apt-get -y install yum-utils 安装即可，然后再执行一次上面的命令
+```
+
 查看容器信息
 ```
 docker inspect 容器名称（或ID）
@@ -251,3 +272,64 @@ docker tag 镜像名 私服地址:端口/镜像名
 docker push 私服地址:端口/镜像名
 
 从私有仓库下载镜像
+
+
+#关于docker网络
+docker安装后，默认会创建三种网络类型，bridge、host和none，可通过如下命令查看
+sudo docker network ls
+
+bridge:网络桥接
+默认情况下启动、创建容器都是用该模式，所以每次docker容器重启时会按照顺序获取对应ip地址，这就导致容器每次重启，ip都发生变化
+
+none：无指定网络
+启动容器时，可以通过–network=none,docker容器不会分配局域网ip
+
+host：主机网络
+docker容器的网络会附属在主机上，两者是互通的。
+
+而我们想自定义一个ip地址，则需要新建一个bridge，下面来介绍创建方法。
+创建自定义的bridge(网段)
+sudo docker network create --subnet=192.168.86.111/16 mynetwork
+
+然后从该网段选取一个ip启动一个容器，该容器的ip即为这个ip
+
+
+#内网SNAT
+配置网卡
+vim  /etc/sysconfig/network-scripts/ifcfg-ens192
+
+开启ip转发功能
+vim //etc/sysctl.conf
+加上 net.ipv4.ip_forward=1
+重启网络 service network restart
+查看是否修改成功 sysctl net.ipv4.ip_forward
+
+将网段172.17.0.0/16内的ip出口设为10.0.0.121
+iptables -t nat -I POSTROUTING -p all -s 172.17.0.0/16 -j SNAT --to-source 10.0.0.121
+
+将docker某个容器的入口指定为宿主机的某个ip和端口
+docker run -id --name mynginx1 -p 10.0.0.111:80:80 nginx
+
+此时我们可以指定docker默认网段（172.17.0.0/16）ip流量到指定出口10.0.0.121。我们无法提前预知某个容器最终被分配给的 IP 地址是什么，也就无法提前通过 iptables 规则为其指定出口网卡，此时要创建自定义网络来解决这个问题。
+docker network create --subnet=172.18.0.0/16 --opt "com.docker.network.bridge.name"="docker1"  docker1 //为docker自定义一个网段为172.18.0.0/16的网段的网桥，名字为docker1
+
+
+这个时候在运行容器的时候为容器指定一个自定义网段内的ip作为其固定ip地址。
+docker run -id --network=docker1 --ip=172.18.0.131 -p 10.0.0.111:1111:1111 --name=mynginx2 nginx  //创建一个地址为171.18.0.131的容器并将宿主机10.0.0.111:1111映射到该容器;
+此时知道了容器的ip,此时就可以把容器绑定到指定主机网卡了，即指定了出口
+iptables -t nat -I POSTROUTING -p all -s 172.18.0.131 -j SNAT --to-source 10.0.0.131
+
+
+重启docker
+systemctl restart docker
+
+
+查看iptables规则
+iptables -t nat -L -n --line-number
+删除 iptables 规则
+
+iptables -t nat -D POSTROUTING 11
+其中，最后的 11 是要删除的规则序号（num）。
+
+删除docker自定义网络
+docker network rm docker1
