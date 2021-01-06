@@ -186,7 +186,7 @@ netstat -aptn
 systemctl stop firewalld
 systemctl mask firewalld
 
-yum install iptables-services
+yum install iptables-services -y
 systemctl enable iptables
 
 systemctl [stop|start|restart] iptables
