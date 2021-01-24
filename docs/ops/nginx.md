@@ -21,7 +21,7 @@ centos7.2
 Nginx是一个开源且高性能，可靠的HTTP中间件，代理服务。
 类似的有 HTTPD（来自Apache基金会），IIS(来自微软)
 
-安装nginx
+### 安装nginx
 gcc -v
 yum -y install gcc
 
@@ -55,10 +55,12 @@ make install
 
 6、配置nginx的配置文件nginx.conf文件，主要也就是端口
 
+### 启动nginx
 7、启动nginx服务
 切换目录到/usr/local/nginx/sbin下面,启动nginx服务。
 ./nginx
 
+###  查看nginx是否启动
 8、查看nginx服务是否启动成功
 ps -ef | grep nginx
 
@@ -68,12 +70,18 @@ systemctl stop firewall.service
 或者运行以下命令添加80端口：
 firewall-cmd --zone=public --add-port=80/tcp --permanent
 
-强制关闭nginx
-pkill -9 nginx
+### 关闭nginx
+ 方式一： pkill -9 nginx
+ 方式二： ps -ef | grep nginx  查看nginx的pid（这里root 后面的数字表示：主进程号
+nginx后面的数字表示：子进程号）
+从容停止nginx:  kill -QUIT  主进程号
+快速停止nginx: kill -TERM  主进程号
+强制停止nginx: kill -9 主进程号
 
 
 
-nginx.conf说明
+
+### nginx.conf说明
 
 #user  nobody;
 worker_processes  1; #工作进程：数目。根据硬件调整，通常等于cpu数量或者2倍cpu数量。
@@ -84,6 +92,9 @@ worker_processes  1; #工作进程：数目。根据硬件调整，通常等于c
 #error_log  logs/error.log  info;
 
 #pid        logs/nginx.pid; # nginx进程pid存放路径
+### 查看日志
+tail -20f access.log  实时监控最后20条日志
+tail -n 20 access.log 查看日志最后20行日志
 
 1、全局块：配置影响nginx全局的指令。一般有运行nginx服务器的用户组，nginx进程pid存放路径，日志存放路径，配置文件引入，允许生成worker process数等。
 
@@ -120,7 +131,15 @@ http {
     keepalive_timeout  65;
 
     #gzip  on; #开启gzip压缩服务
-###开启https服务
+
+### 请求头的设置相关
+关于Host设置
+proxy_set_header  Host  $host | $http_host | $proxy_host
+$host    浏览器请求的ip，不显示端口
+$http_host 浏览器请求的ip和端口号 （端口存在则显示）
+$proxy_host 被代理服务的ip和端口号，默认80端口不显示，其他显示
+
+### 开启https服务
 检测openssl版本，必须要高点的版本
 openssl version
 查看nginx是否有开启--with-http_ssl_module
@@ -144,20 +163,20 @@ ssl on;
 ssl_certificate /usr/local/nginx/ssl_key/irlen.crt
 ssl_certificate_key /usr/local/nginx/ssl_key/irlen.key
 
-###苹果要求的证书
+### 苹果要求的证书
 需要openssl1.0.2版本及以上
 使用SHA256以上哈希算法
 必须使用RSA 2048位或者ECC 256位以上公钥算法
 openssl req -days 36500 -x509 -sha256 -nodes -newkey rsa:2048 -keyout irlen.key -out irlen_apple.crt
 
-###https服务优化
+### https服务优化
 激活keepalive长链接,ssl session缓存
 server中  keepalive_timeout 100;
 ssl on;
 ssl_session_cache shared:SSL:10m; //配置10M的缓存
 ssl_session_timeout 10m; //十分钟之后缓存失效
 
-###一个端口同时支持http和https
+### 一个端口同时支持http和https
 本机IP为10.0.0.111，11110为后端HTTP端口，11111为后端HTTPS端口，1111为nginx监听端口。
 配置如下
 stream {
@@ -187,7 +206,7 @@ server {
 
 
 
-1、几个常见配置项：
+### 几个常见参数配置项：
 
 1.$remote_addr 与 $http_x_forwarded_for 用以记录客户端的ip地址；
 2.$remote_user ：用来记录客户端用户名称；
@@ -198,27 +217,27 @@ server {
 7.$http_referer ：用来记录从那个页面链接访问过来的；
 8.$http_user_agent ：记录客户端浏览器的相关信息；
 
-###检查配置文件语法，并重载配置
+### 检查配置文件语法，并重载配置
 检查配置文件语法是否正确
 nginx -tc /usr/local/nginx/nginx.conf
 更改配置后重载配置，无需重启nginx
 nginx -s reload -c /local/nginx/nginx.conf
 
-###一些常用命令
+### 一些常用命令
 可列出nginx安装的所有包
 rpm -ql nginx
 重启nginx服务
 systemctl reatart nginx.service
 tail -n 200 /log  查看最近200行日志
 
-#nginx配置https完整过程
+### nginx配置https完整过程
 1.查看nginx是否安装http_ssl_module模块
 /usr/local/nginx/sbin/nginx -V
 如果出现 configure arguments: --with-http_ssl_module, 则已安装
 
 ./configure --prefix=/usr/local/nginx --with-http_ssl_module && make && make install
 
-###以参数作为地址进行转发
+### 以参数作为地址进行转发
 在实际项目中，由于https安全策略，我们无法直接跳转到我们想要跳转到的地址
 例如 url：https://abc.dc.com/image?url=https://vpic.video.qq.com/1641213/p0685fxrwij.png
 location ~/image {

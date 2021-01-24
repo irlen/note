@@ -161,7 +161,7 @@ firewall-cmd --zone=public --add-port=3306/tcp --permanent
 然后重启防火墙
 
 
-### 防火墙相关操作###########################################################
+### 防火墙相关操作
 1. 查看防火墙状态
 firewall-cmd --state            ## 结果显示为running或not running
 2. 关闭防火墙firewall
@@ -170,18 +170,18 @@ systemctl disable firewalld.service
 3. 关闭防火墙firewall后开启
 systemctl start firewalld.service
 4. 开启端口
-## zone -- 作用域
-## add-port=80/tcp -- 添加端口，格式为：端口/通讯协议
-## permanent -- 永久生效，没有此参数重启后失效
-firewall-cmd --zone=public --add-port=3306/tcp --permanent
-## 开启3306端口后，workbench或naivcat 就能连接到MySQL数据库了
+ zone -- 作用域
+ add-port=80/tcp -- 添加端口，格式为：端口/通讯协议
+ permanent -- 永久生效，没有此参数重启后失效
+ firewall-cmd --zone=public --add-port=3306/tcp --permanent
+ 开启3306端口后，workbench或naivcat 就能连接到MySQL数据库了
 查看某个端口是否开启
 firewall-cmd --query-port=80/tcp
 查看所有被开启的端口
 netstat -aptn
 
 
-#关闭firewall使用iptables
+### 关闭firewall使用iptables
 
 systemctl stop firewalld
 systemctl mask firewalld
@@ -192,7 +192,8 @@ systemctl enable iptables
 systemctl [stop|start|restart] iptables
 保存防火墙规则
 service iptables save
-###使用iptables开启端口
+
+### 使用iptables开启端口
 打开配置文件
 vim /etc/sysconfig/iptables
 添加内容
@@ -200,7 +201,8 @@ vim /etc/sysconfig/iptables
 重启服务
 service iptables restart
 
-查看某个端口是否重启,如果没显示任何内容，则未开启
+### 查看端口是否开启
+查看某个端口是否开启,如果没显示任何内容，则未开启
 lsof i:1111
 或者 iptables -n -L 会列出iptables规则，可以看到开放的端口
 
@@ -223,7 +225,7 @@ man firewall-cmd                               ##查看帮助
 systemctl status firewalld.service                               ##查看防火墙状态
 systemctl [start|stop|restart] firewalld.service                 ##启动|关闭|重新启动  防火墙
 
-##查询端口号80 是否开启
+### 查询某个端口是否开启
 firewall-cmd --query-port=80/tcp
 更多命令，使用 firewall-cmd --help 查看帮助文件
 
@@ -231,7 +233,7 @@ firewall-cmd --query-port=80/tcp
 centos6的网卡重启方法：service network restart
 centos7的网卡重启方法：systemctl restart network
 
-安装nodejs################################################################################################################
+### 安装nodejs
 1、确认依赖环境
 
 确认服务器有nodejs编译及依赖相关软件，如果没有可通过运行以下命令安装。
