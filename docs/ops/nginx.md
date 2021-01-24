@@ -134,10 +134,37 @@ http {
 
 ### 请求头的设置相关
 关于Host设置
-proxy_set_header  Host  $host | $http_host | $proxy_host
-$host    浏览器请求的ip，不显示端口
-$http_host 浏览器请求的ip和端口号 （端口存在则显示）
-$proxy_host 被代理服务的ip和端口号，默认80端口不显示，其他显示
+  proxy_set_header  Host  $host | $http_host | $proxy_host
+  $host    浏览器请求的ip，不显示端口
+  $http_host 浏览器请求的ip和端口号 （端口存在则显示）
+  $proxy_host 被代理服务的ip和端口号，默认80端口不显示，其他显示
+  头信息的改写用的最多的是：
+  proxy_set_header Host $http_host;
+  proxy_set_header X-Real-IP $remote_addr;
+
+nginx跨域访问设置
+  location中加入：
+  add_header Access-Control-Allow-Origin *;
+  add_header Access-Control-Allow-Methods GET,POST,PUT,DELETE,OPTIONS;
+
+nginx防盗链，防止网站资源被盗用
+  http_refer 防盗链配置模块（比如百度网址获取一个图片，那获取图片这个行为的refer是百度网址）
+  配置防盗链,在location中加入：
+  valid_referers none block 116.62.103.228 ~/google\./;(允许访问的refer,none表示允许没有refer信息的访问途径访问，blocked表示未带协议信息的refer；也可以用正则匹配作为合法refer)
+  if($invalid_referer){
+    return 403;
+  }
+  测试： curl -e "http://baidu.com" -I http://116.32.23.32/web.png 
+  -e 设置访问的refer -I 显示出头信息
+
+### 代理软件 SwitchySharp
+
+
+
+
+### 正向代理和反向代理
+正向代理代理的对象是客户端
+反向代理代理的对象是服务端
 
 ### 开启https服务
 检测openssl版本，必须要高点的版本
