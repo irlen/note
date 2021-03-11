@@ -1,18 +1,18 @@
 ### vue语法
 
-#模板中显示数据
+模板中显示数据
 {{}}，v-text="",v-html="字符串中包含标签将作为html解析"
 
-#绑定事件
+绑定事件
 v-on:click="handleClick"  @click="handleClick"
 
-#属性绑定
-v-bind:title="title"  , :title=""
+属性绑定,以及用变量作为属性
+v-bind:title="title"  , :[title]=""
 
 #双向数据绑定
 v-model=""
 
-#vue中的计算属性和侦听器
+vue中的计算属性和侦听器
 ```
 computed:{
     fullName: function(){
@@ -25,22 +25,23 @@ watch:{
     }
 }
 ```
-#vue中条件判断和循环
+vue中条件判断和循环
 ```
 v-if="ture" ， v-show="true"
 <li v-for="item of list">{{item}}</li>
 ```
-#vue中样式和class的绑定
+vue中样式和class的绑定
 style="原生的样式"
 :style="{一个样式的对象，数据可以来自vue实例中的成员变量}"
 :class="{'active': true}" 绑定单个class,并判断是否生效
 :class="[{'active': true},{'isShow':true}]"
-#vue中数据传递
+
+### vue中数据传递
 1.父组件向子组件传递数据props
 
-父组件将值绑定到子组件属相上:data= "data"
+父组件将值绑定到子组件属性上:data= "data"
 子组件
-````
+```
 export default {
     props: ['logo']
 }
@@ -48,7 +49,7 @@ export default {
 ```
 2.子组件向父组件传值
 ```
-//子组件
+子组件
 <input @change="setUser" />
 data(){
     return {
@@ -60,7 +61,7 @@ methods:{
         this.$emit('transferUser',this.username);
     }
 }
-//父组件
+父组件
 <子组件 @transferUser="getUser"></子组件>
 methods:{
     getUser(username){
@@ -71,16 +72,16 @@ methods:{
 
 
 
-
 ### Vue-cli
-vue工程的脚手架工具
-#全局安装vue-cli
-npm install -g @vue/cli  @vue/cli-service-global\
 
-#创建基于webpack模板的新项目
+vue工程的脚手架工具
+全局安装vue-cli
+npm install -g @vue/cli  @vue/cli-service-global
+
+创建基于webpack模板的新项目
 vue create todolist
 
-#到应用目录下启动项目
+到应用目录下启动项目
 npm run serve
 
 ### 集成element-ui组件库
@@ -98,7 +99,7 @@ Vue.use(ElementUI);
 
 vue官方路由解决方案
 
-#组件标签
+组件标签
 ```
 <div>
     <router-link to="/foo"></router-link>
@@ -106,7 +107,7 @@ vue官方路由解决方案
     <router-view></router-view>
 </div>
 ```
-#定义路由
+定义路由
 ```
 const routes = [
     {path:'/foo',component: Foo},
@@ -114,26 +115,26 @@ const routes = [
 ]
 ```
 
-#创建router实例
+创建router实例
 ```
 const router = new VueRouter({
     routes
 })
 ```
-#创建和挂载根实例
+创建和挂载根实例
 ```
 const app = new Vue({
     router
 }).$mount("#app");
 ```
-#动态路由传参
+动态路由传参
 ```
 routes: [
     {path: '/user/:id',component: User}
 ]
 ```
 
-#监测路由变化
+监测路由变化
 ```
 watch: {
     '$route'(to,from){
@@ -152,7 +153,7 @@ this.$router.go(-1);
 this.$router.push("/");
 this.$router 和 router 使用起来完全一样。我们使用 this.$router 的原因是我们并不想在每个独立需要封装路由的组件中都导入路由
 
-#2.2中引入了导航守卫beforeRouteUpdate
+2.2中引入了导航守卫beforeRouteUpdate
 ```
 const User = {
     template: '<div></div>',
@@ -161,7 +162,7 @@ const User = {
     }
 }
 ```
-#匹配404
+匹配404
 将这个路由匹配放到最后面
 ```
 {
@@ -172,7 +173,7 @@ const User = {
 当使用通配符时，$route.params内会自动添加一个名为 pathMatch 参数，它包含了URL通过通配符匹配到的东西
 this.$route.params.pathMatch;
 
-#嵌套路由
+嵌套路由
 ```
 const User = {
   template: `
@@ -222,7 +223,7 @@ const router = new VueRouter({
 })
 ```
 
-#命名路由
+命名路由
 ```
 const router = new VueRouter({
     routes:[
@@ -261,7 +262,7 @@ const router = new VueRouter({
 })
 
 ```
-#重定向和别名
+重定向和别名
 ```
 const router = new VueRouter({
     routes:[
@@ -275,7 +276,7 @@ const router = new VueRouter({
 })
 
 ```
-#别名
+别名
 给‘/a’匹配别名‘/b’，则访问‘/b’和访问‘/a’是一样的
 ```
 const router = new VueRouter({
@@ -285,9 +286,10 @@ const router = new VueRouter({
 })
 //alias 别名
 ```
-#路由组件传参
+路由组件传参
 通过props将组件和路由解耦
 如果 props 被设置为 true，route.params 将会被设置为组件属性
+
 ```
 const User = {
   props: ['id'],
@@ -312,8 +314,76 @@ vue-router默认使用hash路由，不需要后端支持，可用浏览器直接
 history路由需要后端环境支持
 使用history路由，后端nginx支持
 nginx
+
 ```
 location / {
   try_files $uri $uri/ /index.html;
 }
 ```
+
+
+### 状态管理
+
+安装 vuex
+cnpm install vuex
+
+在store.js中使用vuex
+```
+import Vue from 'vue'
+import Vuex from 'vuex'
+Vue.use(Vuex)
+cosnt store = new Vuex.Store({
+  state: {
+    data: 0
+  },      //数据状态
+  mutations: {
+    changeDataMut(state,params){  
+        state.data = params
+    }
+  },   //相当于reducer, 一系列修改状态的函数，commit触发
+  actions: {
+    changeDataAct(context,params){  
+        let {commit} = context
+        commit('changeDataMut',params)
+    }
+  },    //dispatch触发修改state,实质是执行了mutation
+  getters:{
+    doubleGet(state){
+      return state.data*2
+    }
+  },     //计算属性,依赖state计算出最终想要的数据结果，直接在组件中使用，需要通过函数return。
+  modules:{}      //模块
+})
+
+在main.js中注入store
+import Vue from 'vue'
+import App from './App.vue'
+import store from './store'
+new Vue({
+  render: h=>h(App),
+  store
+}).$mount('#app)
+
+组件中使用数据
+<div>
+  我是组件1
+  {{this.$store.state.data}}
+</div>
+
+<div>
+  我是组件2
+  {{this.$store.state.data}}
+</div>
+
+修改data
+1.直接使用mutation修改state
+  this.$store.commit('changeDataMut',10)
+2.使用action触发来修改state
+  this.$store.dispatch('changeDataAct',100)
+
+
+组件中使用getters
+this.$store.getters.doubleGet
+
+```
+

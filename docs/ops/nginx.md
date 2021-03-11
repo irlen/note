@@ -23,7 +23,7 @@ Nginx是一个开源且高性能，可靠的HTTP中间件，代理服务。
 
 ### 安装nginx
 gcc -v
-yum -y install gcc
+yum -y install gcc gcc-c++
 
 2、pcre、pcre-devel安装
 pcre是一个perl库，包括perl兼容的正则表达式库，nginx的http模块使用pcre来解析正则表达式，所以需要安装pcre库。
@@ -37,16 +37,20 @@ zlib库提供了很多种压缩和解压缩方式nginx使用zlib对http包的内
 openssl是web安全通信的基石，没有openssl，可以说我们的信息都是在裸奔。。。。。。
 安装命令：yum install -y openssl openssl-devel
 
+
 安装nginx
 1、下载nginx安装包
 wget http://nginx.org/download/nginx-1.19.6.tar.gz
 
 2、把压缩包解压到usr/local/
 tar -zxvf  nginx-1.19.6.tar.gz
+安装http_proxy_connect_module.git包，在cur_nginx
+ git clone https://github.com/chobits/ngx_http_proxy_connect_module.git
+ patch -p1 < /cur_nginx/ngx_http_proxy_connect_module/patch/proxy_connect_rewrite_1018.patch
 
 3、切换到cd /usr/local/nginx-1.19.6/下面
 
-./configure --prefix=/usr/local/nginx --with-http_ssl_module --with-ipv6
+./configure --prefix=/usr/local/nginx --with-http_ssl_module --with-ipv6 --with-http_stub_status_module --with-http_realip_module --with-threads --add-module=/cur_nginx/ngx_http_proxy_connect_module
 
 make
 
@@ -154,7 +158,7 @@ nginx防盗链，防止网站资源被盗用
   if($invalid_referer){
     return 403;
   }
-  测试： curl -e "http://baidu.com" -I http://116.32.23.32/web.png 
+  测试： curl -e "http://baidu.com" -I http://116.32.23.32/web.png
   -e 设置访问的refer -I 显示出头信息
 
 ### 代理软件 SwitchySharp

@@ -19,7 +19,7 @@
     - [annotation](/java/annotation)
     - [常用方法](/java/method)
     - [常用api](/java/api)
-    - [登录验证方式](/java/login)
+    - [权限相关](/java/login)
     - [io](/java/io)
 - +python
     - [爬虫](/python/spy)
