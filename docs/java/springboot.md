@@ -951,7 +951,7 @@ public class Authenticationintercepter implements HandlerInterceptor(){
         try{
           userId = JWT.decode(token).getAudience().get(0);
         }catch(JWTdecodeException j){
-          throw new RuntimeException("401);
+          throw new RuntimeException("401");
         }
         User user = userService.findById(userId);
 
@@ -988,7 +988,7 @@ public class Authenticationintercepter implements HandlerInterceptor(){
 public class InterceptorConfig implements WebMvcConfigurer{
   @Override
   public void addInteceptors(InterceptorRegistry registry){
-    registry.addInterceptor(authenticationInterceptor()).addPathPatters("/**);
+    registry.addInterceptor(authenticationInterceptor()).addPathPatters("/**");
   }
   @Bean //该注解的意思是产生一个上下文的bean对象，交个spring容器管理
   public AuthenticationInterceptor authenticationInterceptor(){
