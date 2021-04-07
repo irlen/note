@@ -122,11 +122,20 @@ Bean代码如下：
   }
 ```
 2.@ConfigurationProperties(prefix="配置文件中key的前缀")，该注解可以将文件中的配置自动与实体进行映射
+
 application.yml中
 ```
 person:
   name: zhangsan
   age: 18
+
+
+  pom.xml中需引入依赖
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
+  </dependency>
 ```
 Bean中
 ```
@@ -140,6 +149,7 @@ pulic class QuikStartController{
   public String quik(){
     return "my name"+" is "+name;
   }
+  //注意：类里面要有name和age的getter,setter方法
 }
 ```
 
@@ -444,8 +454,8 @@ logging:
 ```
 //此为接收Girl对象的各个属性
 publiuc addGirl(
-  @RequestParam('age') Integer age,
-  @RequestParam('sex') String sex
+  @RequestParam("age") Integer age,
+  @RequestParam("sex") String sex
 ){
 
 }
@@ -560,7 +570,7 @@ public class ResultUtil{
 ```
 3.新建一个异常捕获类
 ```
-@controllerAdvice
+@ControllerAdvice
 public class ExceptionHandle{
   @ExceptionHandler(Exception.class)
   @ResponseBody
@@ -880,12 +890,13 @@ public class OneInterceptor implements HandleInterceptor{
 
 ### 集成JWT
 添加依赖
+```
 <dependency>
   <groupId>com.auth0</groupId>
   <artifactId>java-jwt</artifactId>
   <version>3.4.0</version>
 </dependency>
-
+```
 定义两个注解
 ```
 用来跳过验证的PassToken注解
@@ -916,9 +927,9 @@ public String getToken(User user){
 ```
 接下来需要写一个拦截器去截获token并验证token
 ```
-public class Authenticationintercepter implements HandlerInterceptor(){
+public class AuthenticationInterceptor implements HandlerInterceptor(){
   @Autowired
-  UserService userService; //userService为user的mapper
+  private UserService userService; //userService为user的mapper
 
   @Override
   public boolean preHandle(HttpServerletRequest httpServerletRequest,HttpServerletResponse httpServerletResponse, Object object) throws Exception{
