@@ -90,15 +90,64 @@ npm run serve
 cnpm install -S element-ui
 
 #在main.js中引入，全局可用
-import ElementUI from 'element-ui'
-import  'element-ui/lib/theme-chalk/index.css'
-Vue.use(ElementUI);
+import 'element-ui/lib/theme-chalk/base.css';
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
+
+import 'element-ui/lib/theme-chalk/index.css';
+
+
+Vue.use(Button)
+Vue.component(CollapseTransition.name, CollapseTransition)
+Vue.prototype.$ELEMENT = { size: 'small', zIndex: 3000 };
+
+借助babel-plugin-component，按需引入组件，以达到减小项目体积的目的；
+cnpm install babel-plugin-component -D
+然后编辑.babelrc:
+```
+{
+  "presets": [["@babel/preset-env", { "modules": false }]],
+  "plugins": [
+    [
+      "component",
+      {
+        "libraryName": "element-ui",
+        "styleLibraryName": "theme-chalk"
+      }
+    ]
+  ]
+}
+```
+对elementg-ui 引入字定义主题
+在线主体编辑器https://element.eleme.cn/#/zh-CN/theme/preview
+编辑之后引入
+
+修改 .babelrc 的配置，指定styleLibraryName 路径为自定义主题相对于.babelrc的路径，注意要加~
+
+{
+  "plugins": [
+    [
+      "component",
+      {
+        "libraryName": "element-ui",
+        "styleLibraryName": "~theme"
+      }
+    ]
+  ]
+}
+
+
+
+
+
+
+
+
 
 
 ### vue-router
 
 vue官方路由解决方案
-
+https://router.vuejs.org/zh/installation.html
 组件标签
 ```
 <div>
@@ -386,4 +435,3 @@ new Vue({
 this.$store.getters.doubleGet
 
 ```
-
