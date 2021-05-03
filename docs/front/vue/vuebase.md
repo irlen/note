@@ -8,6 +8,16 @@ v-on:click="handleClick"  @click="handleClick"
 
 属性绑定,以及用变量作为属性
 v-bind:title="title"  , :[title]=""
+### class的动态切换
+绑定一个返回对象的计算属性：Vue.js 将绑定表达式限制为一个表达式。如果需要多于一个表达式的逻辑，应当使用计算属性。
+```
+<div v-bind:class="classObject"></div>
+computed: {
+   classObject: function () {
+      return { active: this.isActive && !this.error, 'text-danger': this.error && this.error.type === 'fatal' }
+   }
+}
+```
 
 #双向数据绑定
 v-model=""
@@ -199,7 +209,7 @@ this.$route.params.username;
 //后退
 this.$router.go(-1);
 //跳转到新的路由
-this.$router.push("/");
+this.$router.push({path: "/"});
 this.$router 和 router 使用起来完全一样。我们使用 this.$router 的原因是我们并不想在每个独立需要封装路由的组件中都导入路由
 
 2.2中引入了导航守卫beforeRouteUpdate
