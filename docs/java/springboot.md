@@ -1044,11 +1044,35 @@ public class UserApi{
     return "您已成功登录";
   }
 }
-
-
 ```
+### json解析
+# FastJSON
+```
+<dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>fastjson</artifactId>
+    <version>1.2.47</version>
+</dependency>
+```
+json以json字符串的形式传到后端
+```
+  //array
+  JSONObject object = JSONObject.parseObject("{\"boolean\":true,\"string\":\"string\",\"list\":[1,2,3],\"int\":2}");
+
+  //string
+  String s = object.getString("string");
+
+  //int
+  int i = object.getIntValue("int");
+
+  
+  //boolean
+  boolean b = object.getBooleanValue("boolean");
 
 
+  //list
+  List<Integer> integers = JSON.parseArray(object.getJSONArray("list").toJSONString(),Integer.class);
+```
 
 
 
