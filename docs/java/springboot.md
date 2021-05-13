@@ -1072,6 +1072,20 @@ json以json字符串的形式传到后端
 
   //list
   List<Integer> integers = JSON.parseArray(object.getJSONArray("list").toJSONString(),Integer.class);
+
+
+  //从字符串解析JSON对象
+  JSONObject obj = JSON.parseObject("{\"runoob\":\"菜鸟教程\"}");
+
+  //从字符串解析JSON数组
+  JSONArray arr = JSON.parseArray("[\"菜鸟教程\",\"RUNOOB\"]\n");
+
+  //将JSON对象转化为字符串
+  String objStr = JSON.toJSONString(obj);
+  
+  //将JSON数组转化为字符串
+  String arrStr = JSON.toJSONString(arr);
+
 ```
 
 
