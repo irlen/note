@@ -1046,7 +1046,7 @@ public class UserApi{
 }
 ```
 ### json解析
-# FastJSON
+FastJSON
 ```
 <dependency>
     <groupId>com.alibaba</groupId>
@@ -1056,23 +1056,25 @@ public class UserApi{
 ```
 json以json字符串的形式传到后端
 ```
-  //array
+  //json字符串转化成JSONObject对象
   JSONObject object = JSONObject.parseObject("{\"boolean\":true,\"string\":\"string\",\"list\":[1,2,3],\"int\":2}");
 
-  //string
+  //从JSONObject中取出对应的string类型的键值
   String s = object.getString("string");
 
-  //int
+  //从JSONObject中取出对应的int类型的键值
   int i = object.getIntValue("int");
 
   
-  //boolean
+  //从JSONObject中取出对应的boolean类型的键值
   boolean b = object.getBooleanValue("boolean");
 
 
-  //list
+  //从JSONObject中取出对应的list类型的键值，并转化成List对象
   List<Integer> integers = JSON.parseArray(object.getJSONArray("list").toJSONString(),Integer.class);
 
+  //JSONArray直接转化为List对象,result为list类型json字符串
+  List<String> dataArr = JSONArray.parseArray(result,String.class);
 
   //从字符串解析JSON对象
   JSONObject obj = JSON.parseObject("{\"runoob\":\"菜鸟教程\"}");
