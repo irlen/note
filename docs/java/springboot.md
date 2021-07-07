@@ -183,8 +183,8 @@ spring:
     username: root
     password: root
 
-    mybatis: 
-      configuration: 
+    mybatis:
+      configuration:
         map-usederscore-tocamel-case: true
 ```
 
@@ -696,7 +696,7 @@ alter table `user` add `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 用代码创建数据表
 CREATE TABLE `user`(
   `user_id` int(16) NOT NULL AUTO_INCREMENT COMMENT '用户id',
-  `user_name` varchar(64) NOT NULL COMMENT '用户名', 
+  `user_name` varchar(64) NOT NULL COMMENT '用户名',
   `user_pass`  varchar(64) NOT NULL COMMENT '用户密码',
   `role_id` int(8) NOT NULL DEFAULT 1 COMMENT '用户角色',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -1065,7 +1065,7 @@ json以json字符串的形式传到后端
   //从JSONObject中取出对应的int类型的键值
   int i = object.getIntValue("int");
 
-  
+
   //从JSONObject中取出对应的boolean类型的键值
   boolean b = object.getBooleanValue("boolean");
 
@@ -1084,11 +1084,38 @@ json以json字符串的形式传到后端
 
   //将JSON对象转化为字符串
   String objStr = JSON.toJSONString(obj);
-  
+
   //将JSON数组转化为字符串
   String arrStr = JSON.toJSONString(arr);
-
 ```
+  ### springboot静态资源访问
+  静态资源的配置与两个配置有关
+
+  1.spring.mvc.static-path-pattern  
+  这个配置是决定什么路径指向静态资源，默认为/*。意思就是url满足什么条件，springboot就会去处理静态资源请求。
+
+  2.spring.resources.static.locations
+  这个配置是本地哪个文件中存放的是静态资源，即springboot到哪里去寻找静态资源，也就是配置一指向的地方。
+  这个配置默认值为：
+  classpass:/META-INF/resources/,
+  classpass:/resources/,
+  classpass:/static/,
+  classpass:/public/
+  优先级从高到低，优先级高的文件没找到才会找优先级低的文件。
+
+  配置通常会被拦截，需要在拦截器中配置如下：
+  ```
+  @Configuration
+  public class MvcConfig implements WebMvcConfigurer {
+      @Override
+      public void addResourceHandlers(ResourceHandlerRegistry registry){
+          registry.addResourceHandler("/public/**").addResourceLocations("/resources/static/");
+      }
+  }
+  //意思就是/public/**匹配的url直接指向文件/resources/static
+  ```
+
+
 
 
 
