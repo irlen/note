@@ -71,8 +71,7 @@ methods:{
 
 
 
-
-### Vue-cli
+###  Vue-cli
 vue工程的脚手架工具
 #全局安装vue-cli
 npm install -g @vue/cli  @vue/cli-service-global\
@@ -98,6 +97,7 @@ Vue.use(ElementUI);
 
 vue官方路由解决方案
 
+### 路由
 #组件标签
 ```
 <div>
@@ -106,7 +106,7 @@ vue官方路由解决方案
     <router-view></router-view>
 </div>
 ```
-#定义路由
+
 ```
 const routes = [
     {path:'/foo',component: Foo},
@@ -142,7 +142,7 @@ watch: {
 }
 
 ```
-#使用路由的一些方法
+使用路由的一些方法
 
 //获取参数
 this.$route.params.username;
@@ -317,3 +317,24 @@ location / {
   try_files $uri $uri/ /index.html;
 }
 ```
+
+
+### 双向绑定高级用法
+const app =  Vue.create({
+  data() {
+    return {
+      count： 1，
+      count1: 1
+    }
+  }
+
+  template: `
+    <Counter />
+  `
+})
+
+app.component('Counter',{
+  data(){
+
+  }
+})
