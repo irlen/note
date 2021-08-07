@@ -36,4 +36,14 @@ list中只可添加String类型元素；
 
 ### 搭建Flutter开发环境
 中文官网： https://flutterchina.club/
-获取Flutter的SDK
+windows10环境
+  1.设置环境变量
+  FLUTTER_STORAGE_BASE_URL ：https://storage.flutter-io.cn
+  PUB_HOSTED_URL：https://pub.flutter-io.cn
+  2.下载安装包
+  Flutter官网下载其最新可用的安装包，下载地址： https://flutter.dev/docs/development/tools/sdk/releases
+  3.测试
+  将安装包解压到安装路径，找到flutter_console.bat文件，双击启动此命令行工具
+  flutter doctor 查看各个各种依赖是否已经安装
+  提示Some Android licen ses not accepted（Android证书的问题）
+  运行 flutter doctor --android-licenses 修复
