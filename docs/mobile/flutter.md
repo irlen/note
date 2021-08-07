@@ -47,3 +47,9 @@ windows10环境
   flutter doctor 查看各个各种依赖是否已经安装
   提示Some Android licen ses not accepted（Android证书的问题）
   运行 flutter doctor --android-licenses 修复
+  将项目的build.gradle和flutter安装目录的flutter.gradle的仓库repositories都配置成阿里云镜像
+  ```
+      maven { url 'https://maven.aliyun.com/repository/google' }
+      maven { url 'https://maven.aliyun.con/repository/jcenter' }
+      maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+  ```
