@@ -1,4 +1,4 @@
-# Dart语言基础
+﻿# Dart语言基础
 官网：https://flutterchina.club/
 ###开发环境搭建
   windows平台：choco install dart-sdk
@@ -92,13 +92,11 @@ Student(String name):super(name);
 
 ### 搭建Flutter开发环境
 中文官网： https://flutterchina.club/
-<<<<<<< HEAD
 获取Flutter的SDK
 ### AndroidSDK下载地址
 https://www.androiddevtools.cn/
 android studio下载地址
 https:/developer.android.google.cn/studio
-
 ### vscode编辑flutter项目
 先在vscode中安装flutter和Dart插件
 在桌面编辑 emulatorrun.bat文件。
@@ -106,7 +104,6 @@ C:\Users\Adinistrator\AppData\Local\Android\Sdk\emulator\emulator.exe-netdelay n
 (命令行中虚拟机名称中的空格用下划线代替)
 双击运行改文件，即可打开虚拟机。
 在vscode终端输入命令flutter run即可运行项目，并自动连接至虚拟机；
-=======
 windows10环境
   1.设置环境变量
   FLUTTER_STORAGE_BASE_URL ：https://storage.flutter-io.cn
@@ -124,4 +121,4 @@ windows10环境
       maven { url 'https://maven.aliyun.con/repository/jcenter' }
       maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
   ```
->>>>>>> 108a4e6bfaedf910c9759d81d2624ddf4b2ec969
+
