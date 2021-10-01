@@ -92,6 +92,7 @@ Student(String name):super(name);
 
 ### 搭建Flutter开发环境
 中文官网： https://flutterchina.club/
+<<<<<<< HEAD
 获取Flutter的SDK
 ### AndroidSDK下载地址
 https://www.androiddevtools.cn/
@@ -105,3 +106,22 @@ C:\Users\Adinistrator\AppData\Local\Android\Sdk\emulator\emulator.exe-netdelay n
 (命令行中虚拟机名称中的空格用下划线代替)
 双击运行改文件，即可打开虚拟机。
 在vscode终端输入命令flutter run即可运行项目，并自动连接至虚拟机；
+=======
+windows10环境
+  1.设置环境变量
+  FLUTTER_STORAGE_BASE_URL ：https://storage.flutter-io.cn
+  PUB_HOSTED_URL：https://pub.flutter-io.cn
+  2.下载安装包
+  Flutter官网下载其最新可用的安装包，下载地址： https://flutter.dev/docs/development/tools/sdk/releases
+  3.测试
+  将安装包解压到安装路径，找到flutter_console.bat文件，双击启动此命令行工具
+  flutter doctor 查看各个各种依赖是否已经安装
+  提示Some Android licen ses not accepted（Android证书的问题）
+  运行 flutter doctor --android-licenses 修复
+  将项目的build.gradle和flutter安装目录的flutter.gradle的仓库repositories都配置成阿里云镜像
+  ```
+      maven { url 'https://maven.aliyun.com/repository/google' }
+      maven { url 'https://maven.aliyun.con/repository/jcenter' }
+      maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+  ```
+>>>>>>> 108a4e6bfaedf910c9759d81d2624ddf4b2ec969
