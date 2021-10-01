@@ -23,7 +23,7 @@ Nginx是一个开源且高性能，可靠的HTTP中间件，代理服务。
 
 ### 安装nginx
 gcc -v
-yum -y install gcc
+yum -y install gcc gcc-c++
 
 2、pcre、pcre-devel安装
 pcre是一个perl库，包括perl兼容的正则表达式库，nginx的http模块使用pcre来解析正则表达式，所以需要安装pcre库。
@@ -37,16 +37,20 @@ zlib库提供了很多种压缩和解压缩方式nginx使用zlib对http包的内
 openssl是web安全通信的基石，没有openssl，可以说我们的信息都是在裸奔。。。。。。
 安装命令：yum install -y openssl openssl-devel
 
+
 安装nginx
 1、下载nginx安装包
 wget http://nginx.org/download/nginx-1.19.6.tar.gz
 
 2、把压缩包解压到usr/local/
 tar -zxvf  nginx-1.19.6.tar.gz
+安装http_proxy_connect_module.git包，在cur_nginx
+ git clone https://github.com/chobits/ngx_http_proxy_connect_module.git
+ patch -p1 < /cur_nginx/ngx_http_proxy_connect_module/patch/proxy_connect_rewrite_1018.patch
 
 3、切换到cd /usr/local/nginx-1.19.6/下面
 
-./configure --prefix=/usr/local/nginx --with-http_ssl_module --with-ipv6
+./configure --prefix=/usr/local/nginx --with-http_ssl_module --with-ipv6 --with-http_stub_status_module --with-http_realip_module --with-threads --add-module=/cur_nginx/ngx_http_proxy_connect_module
 
 make
 
@@ -154,7 +158,7 @@ nginx防盗链，防止网站资源被盗用
   if($invalid_referer){
     return 403;
   }
-  测试： curl -e "http://baidu.com" -I http://116.32.23.32/web.png 
+  测试： curl -e "http://baidu.com" -I http://116.32.23.32/web.png
   -e 设置访问的refer -I 显示出头信息
 
 ### 代理软件 SwitchySharp
@@ -289,3 +293,20 @@ location的匹配规则
 普通字符匹配，正则表达式规则和长的块规则将被优先和查询匹配，也就是说如果该项匹配还需去看有没有正则表达式匹配和更长的匹配。
 ^~ 则只匹配该规则，nginx停止搜索其他匹配，否则nginx会继续处理其他location指令。
 最后匹配理带有"~"和"~*"的指令，如果找到相应的匹配，则nginx停止搜索其他匹配；当没有正则表达式或者没有正则表达式被匹配的情况下，那么匹配程度最高的逐字匹配指令会被使用。
+
+
+### ab压力测试
+安装 ab
+yum install -y httpd-tools 
+
+命令：ab -n Number1 -c Number2  url
+实例：ab -n 1000 -c 100  http：//www.dlmu.edu.cn/
+
+-n：在测试会话中所执行的请求个数。即请求的总次数。
+
+-c：一次产生的请求个数。即并发数。
+
+-r: 一次接口失败之后继续往后
+
+-X使用代理服务器进行测试
+ab -m 1000 -c 100 -X 10.0.0.111:1111 -r http://www.baidu.com/

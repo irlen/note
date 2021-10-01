@@ -180,8 +180,11 @@ firewall-cmd --query-port=80/tcp
 查看所有被开启的端口
 netstat -aptn
 
-
+###抓包工具tcpdump
+tcpdump -i ens192 -vnn  src  host 10.0.0.93 and port 1111 -w 93-111.pcap
 ### 关闭firewall使用iptables
+查看防火强是否开启
+service iptables status
 
 systemctl stop firewalld
 systemctl mask firewalld
@@ -303,3 +306,49 @@ pipenv --venv查看这个虚拟环境所属目录，在pycharm中添加
 但是实际不投入使用，NAT方式跟host-only方式一样为宿主机新添加一个虚拟网卡使之成为双网卡主机。使其同时参与自身现有的局域网和虚拟的局域网。而NAT方式不同于host-only的是，它加设了一个NAT服务器，使得虚拟局域网内的虚拟机对外访问时，完全使用的是宿主机的IP地址，所以对于外界网络来说看到的只有宿主机，而新建的虚拟局域网是透明的。
 
 配置方式：
+
+
+scp命令
+
+
+
+
+### iptables forward DNAT(Destination Network Address Translation)
+清空iptables现有规则
+iptables -F
+iptables -F -t nat
+service iptables save
+
+
+对client,iptables,server三台机器进行修改（桥接）
+  TYPE=Ethernet
+  PROXY_METHOD=none
+  BROWSER_ONLY=no
+  BOOTPROTO=none
+  DEFROUTE=yes（该接口设置为默认路由）
+  IPV4_FAILURE_FATAL=no
+  NAME=ens192
+  DEVICE=ens192（网卡名称）
+  ONBOOT=yes(启动网卡)
+  IPADDR=10.0.0.111
+  GATEWAY=10.0.0.1（网关）
+
+
+在iptables上开启转发功能
+ vim /etc/sysctl.conf
+net.ipv4.ip_forward=1
+sysctl -p 查看是否生效
+
+SNAT策略
+比如机器上有两个网卡，一个是10.0.177.1网段，一个是10.0.188.1网段；
+机器接收到来自177网段的数据包，则指定一个188网段的源出口，便可以发送到188网段的其他服务器
+指定源： iptables -t nat -A POSTROUTING -s 10.0.177.1/24  -j SNAT --to 10.0.118.232
+即177网段的client可直接访问188网段的server（10.0.118.232为本机器上的ip）
+
+DNAT策略
+iptables -t nat -A PREROUTING -d 10.0.0.188.232 -p tcp --dport 80 -j DNAT --to 10.10.177.233:80
+188网段的client需要访问177server网段服务上的资源，直接访问中间一台118网段的服务，就可以得到177server上的资源（10.0.0.188.232和10.10.177.233，分属于两台不同的机器）
+
+
+查看nat表里面的内容
+iptables -t nat -L

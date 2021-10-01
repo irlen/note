@@ -50,14 +50,16 @@ IDEA可以自动初始化一个springboot工程
 ### SpringBoot工程热部署
 
 pom.xml中需添加依赖
+```
 <dependency>
   <groupId>org.springframework.boot</groupId>
   <artifactId>spring-boot-devtools</artifactId>
 </dependency>
+```
 注意：热部署失败的原因是 IDEA默认情况下不自动编译，需要对IDEA进行自动编译设置
-file-settings-Compiler-build project automatically
+file-settings-Compiler  勾选 build project automatically
 
-shift+ctrl+alt+/,选择Registry-compiler.automake.allow.when.app.running 勾选
+shift+ctrl+alt+/, 选择Registry-compiler.automake.allow.when.app.running 勾选
 
 ### SpringBoot配置文件
 
@@ -120,11 +122,20 @@ Bean代码如下：
   }
 ```
 2.@ConfigurationProperties(prefix="配置文件中key的前缀")，该注解可以将文件中的配置自动与实体进行映射
+
 application.yml中
 ```
 person:
   name: zhangsan
   age: 18
+
+
+  pom.xml中需引入依赖
+  <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
+  </dependency>
 ```
 Bean中
 ```
@@ -138,12 +149,13 @@ pulic class QuikStartController{
   public String quik(){
     return "my name"+" is "+name;
   }
+  //注意：类里面要有name和age的getter,setter方法
 }
 ```
 
 ### SpringBoot集成
 
-一.整合mybatis
+### 集成mybatis
 添加mybatis起步依赖
 ```
   <dependency>
@@ -152,7 +164,8 @@ pulic class QuikStartController{
     <version>1.1.1</version>
   </dependency>
 ```
-
+注意：idea设置了自动导入依赖包，但是还是不能导入，是因为节点模式。
+File->Power Save Mode 被勾选了，去掉勾选即可。
 导入数据库坐标（mysql连接驱动）
 ```
 <dependency>
@@ -165,10 +178,14 @@ pulic class QuikStartController{
 ```
 spring:
   datasource:
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8
     username: root
     password: root
+
+    mybatis:
+      configuration:
+        map-usederscore-tocamel-case: true
 ```
 
 插入数据(建表sql语句)
@@ -241,6 +258,47 @@ mybatis:
   }
 ```
 
+### 集成druid数据库连接池
+```
+<dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>druid</artifactId>
+    <version>1.2.5</version>
+</dependency>
+<dependency>
+    <groupId>log4j</groupId>
+    <artifactId>log4j</artifactId>
+    <version>1.2.17</version>
+</dependency>
+```
+在application.yaml中配置
+spring->datasource下添加
+```
+type: com.alibaba.druid.pool.DruidDataSource
+initialSize: 5
+minIdle: 5
+maxActive: 20
+maxWait: 60000
+timeBetweenEvictionRunsMillis: 60000
+minEvictableIdleTimeMillis: 300000
+validationQuery: SELECT 1 FROM DUAL
+testWhileIdle: true
+testOnBorrow: false
+testOnReturn: false
+poolPreparedStatements: true
+//配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+filters: stat,wall,log4j
+maxPoolPreparedStatementPerConnectionSize: 20
+useGlobalDataSourceStat: true
+connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+thymeleaf:
+  cache: false
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  pageSizeZero: false
+```
 
 ### 集成Junit
 
@@ -300,18 +358,7 @@ spring:
 
 ```
 
-在domain文件中创建实体类
-```
-@Entiry
-public class User{
-  @Id
-  @GeneratedValue(strategy=GenerationType.IDENTITY)
-  private Long id;
-  private String username;
-  private String password;
-  private name;
-}
-```
+
 创建repository包，建UserRepository类
 ```
 //User为实体类名，Long是实体类中id的数据类型
@@ -370,8 +417,8 @@ public class RedisTest{
 
 ```
 
-### 日志使用
-选择slf4j和Logback框架
+### 集成日志
+选择slf4j和Logback框架，无需安装依赖（spring自带）
 日志级别 error warn info debug trace
 默认级别为info，info及其以上级别会触发日志记录
 在类中使用Log
@@ -401,14 +448,104 @@ logging:
     console: "%d - %msg%n" //日志格式，输出时间-内容-换行
     file: /var/log/tomcat/sell.log //输出日志的文件
     level: info  //输出日志级别（info及其级别以上的都会被输出）
+    ### 日志
+日志门面：slf4j
+日志实现：logback
+直接使用：
+```
+    private final Logger logger = LoggerFactory.getLogger(当前类.class);
+```
+加注解时候用：
+```
+    @Slf4j, 在类上加这个注解和上面效果一样()
+```
+打印日志：
+```
+log.info("name:"+name+",password="+password);
+或者
+log.info("name:{},password:{}",name,password);
+```
 
+两种配置方式
+1.application.yml(简单功能)
+顶格写
+logging:
+    pattern:
+        console: "%d - %ms%n"  //控制台打印日志格式
+    path: /var/log/tomcat/
+    file: /var/log/tomcat/sell.log //这两项制定日志文件
+    level: debug  //日志级别
+2.logback-spring.xml(复杂配置，比如区分info和erro，每天产生一个日志文件等)
+在resource文件中新建logback-spring.xml
+```
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <!--配置控制台打印相关-->
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender" >
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                %d - %msg%n
+            </pattern>
+        </layout>
+    </appender>
+
+    <!--info级别日志文件输出-->
+    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--过滤掉ERROR级别日志（info默认会收录info级别以上的所有日志）-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>
+                %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动策略,根据时间，每天生成一个info日志文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/var/log/tomcat/sell/info.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+
+    <!--error级别日志文件输出-->
+    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>
+                %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动策略,根据时间，每天生成一个info日志文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/var/log/tomcat/sell/error.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+
+
+
+
+
+    <!--配置适用所有类，级别为info-->
+    <root level="info">
+        <appender-ref ref="consoleLog">
+        <appender-ref ref="fileInfoLog">
+        <appender-ref ref="fileErrorLog">
+    </root>
+</configuration>
+```
 ### 表单验证及参数接收
 接收参数的几种方式
 ```
 //此为接收Girl对象的各个属性
 publiuc addGirl(
-  @RequestParam('age') Integer age,
-  @RequestParam('sex') String sex
+  @RequestParam("age") Integer age,
+  @RequestParam("sex") String sex
 ){
 
 }
@@ -523,7 +660,7 @@ public class ResultUtil{
 ```
 3.新建一个异常捕获类
 ```
-@controllerAdvice
+@ControllerAdvice
 public class ExceptionHandle{
   @ExceptionHandler(Exception.class)
   @ResponseBody
@@ -599,7 +736,6 @@ public enum ResultEnum{
     //下面为code的getter,setter方法
   }
 
-
   ```
 
 
@@ -611,14 +747,54 @@ public enum ResultEnum{
 
 
 
-
 ### mabatis注解使用
 pom.xml引入起步依赖
+```
 <dependency>
   <groupId>org.mybatis.spring.boot</groupId>
   <artifactId>mybatis-spring-boot-starter</artifactId>
 </dependency>
-新建实体类（省略），新建对应的mapper。
+```
+
+
+新建实体类，新建对应的mapper。
+在domain文件中创建实体类
+```
+@Entity
+@DynamicUpdate
+@Data //lombok提供
+@AllArgsConstructor //lombok提供，创建一个全参数构造函数
+@NoArgsConstructor //lombok提供，创建一个无参数构造函数
+public class User{
+  @Id
+  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  //主键自增
+  private String user_id;
+  private String user_name;
+  private String password;
+  private Integer rule_id;
+
+  //private Date update_time;
+  //private Date  create_time;
+  //DynamicUpdate可以更改时间自动更新,创建和更新时间不需要写在实体类中
+
+}
+//用软件创建好表之后，用语句追加
+alter table `user` add `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间';
+alter table `user` add `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后一次更新时间';
+```
+用代码创建数据表
+CREATE TABLE `user`(
+  `user_id` int(16) NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `user_name` varchar(64) NOT NULL COMMENT '用户名',
+  `user_pass`  varchar(64) NOT NULL COMMENT '用户密码',
+  `role_id` int(8) NOT NULL DEFAULT 1 COMMENT '用户角色',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `uqe_user_id` (`user_id`)
+)  ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+
 ```
 //以新增为例
 public interface ProductCategoryMapper{
@@ -736,7 +912,302 @@ pom.xml中引入websocket起步依赖
 }
 ```
 
-`   `
+### 集成定时任务task
+使用注解@EnableScheduling开启定时任务，会自动扫描
+定义@Component作为组件被容器扫描
+表达式生成地址： http://cron.qqe2.com
+
+
+在启动类上加上注解
+@EnableScheduling //有此类则会自动扫描组内的所有包
+
+在组内新建定时任务
+```
+@Component
+public class TestTask{
+  private static SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss);
+  @Scheduled(fixedRate = 3000)  //以3s的固定评率执行该任务
+  public void reportCurrentTime(){
+    System.out.println("现在时间"+dateFormat.format(new Date()));
+  }
+}
+
+注： @Scheduled(cron="表达式") ，表达式可以详细的指定执行的时间范围和频率，在上面网站上可操作生成表达式。
+```
+### 集成异步执行程序
+使用注解@EnableAsync开启异步任务，会自动扫描
+
+异步类需要加@Component注解
+类中的异步方法加@Async注解
+在使用的时候需要实例化对象，调用异步方法，异步方法会同时执行，没有先后顺序。
+使用Future接口
+
+
+### 集成拦截器
+使用注解 @Configuration 配置拦截器
+继承 WebMvcConfigurerAdapter
+重写 addInterceptors 添加需要的拦截器地址
+
+```
+@Configuration
+public class WebMvcConfigure extends WebMvcConfigureerAdapter{
+  @Override
+  public void addInterceptors(InterceptorRegistry registry){
+    registry.addInterceptor(new OneInterceptor()).addPathPatterns(/one/**);
+    super.addInterceptors(registry);
+  }
+}
+//以上代码意思是配置一个拦截器，拦截器在路由为/one/**的控制器执行的时候执行。
+public class OneInterceptor implements HandleInterceptor{
+  @Override
+  public boolean preHandle(HttpServerletRequest request, HttpServletResponse response, Object object)throws Exception{
+    //控制器执行前执行
+    System.out.println("被拦截");
+    return true; //true就是被放行
+  }
+  @Override
+  public void postHandle(){
+    //控制器执行时候执行
+  }
+
+  @Override
+  public void afterCompletion()throws Exception{
+    //控制器执行之后执行
+  }
+}
+
+```
+
+### 集成JWT
+添加依赖
+```
+<dependency>
+  <groupId>com.auth0</groupId>
+  <artifactId>java-jwt</artifactId>
+  <version>3.4.0</version>
+</dependency>
+```
+定义两个注解
+```
+用来跳过验证的PassToken注解
+@Target({ElementType.METHOD,ElementType.Type})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PassToken{
+  boolean required() default true;
+}
+
+需要登录才能操作的注解UserLoginToken
+@Target({ElementType.METHOD,Element.Type})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface UserLoginToken{
+  boolean required() default true;
+}
+
+```
+token的生成方法
+```
+//放在TokenService类中
+public String getToken(User user){
+  String token = "";
+  token = JWT.create().withAudience(user.getUserId()).sign(Algorithm.HMAC256(user.getUserPass()));
+  return token;
+}
+//Algorithm.HMAC256():使用HS256生成token,密钥则是用户的密码，唯一密钥的话可以保存在服务端。
+//withAudience()存入需要保存在token的信息，这里我把用户ID存入token中
+```
+接下来需要写一个拦截器去截获token并验证token
+```
+public class AuthenticationInterceptor implements HandlerInterceptor(){
+  @Autowired
+  private UserService userService; //userService为user的mapper
+
+  @Override
+  public boolean preHandle(HttpServerletRequest httpServerletRequest,HttpServerletResponse httpServerletResponse, Object object) throws Exception{
+    //请求头中取出token
+    String token = httpServletRequest.getHeader("token");
+
+    // 如果不是映射到方法直接通过,忽略类及其他
+    if(!(object instanceof HandlerMethod)){
+      return true;
+    }
+    HandlerMethod handlerMethod = (HandlerMethod)object;
+    Method method = handlerMethod.getMethod();
+    //检查是否有passtoken注释，有则跳过认证
+    if(method.isAnnotationPresent(PassToken.class)){
+      PassToken passToken = method.getAnnotation(PassToken.class);
+      if(passToken.required()){
+        return true;
+      }
+    }
+    //检查有没有需要用户权限的注解
+    if(method.isAnnotationPresent(UserLoginToken.class)){
+      UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
+      if(userLoginToken.required()){
+        //执行认证
+        if(token == null){
+          throw new RuntimeException("无token，请重新登录认证");
+        }
+        //获取token中的userId;
+        String userId;
+        try{
+          userId = JWT.decode(token).getAudience().get(0);
+        }catch(JWTdecodeException j){
+          throw new RuntimeException("401");
+        }
+        User user = userService.findById(userId);
+
+        if(user == null){
+          throw new RuntimeException("该用户不存在");
+        }
+
+        //验证token
+        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getUserPass())).build();
+        try{
+          jwtVerifier.verify(token);
+        }catch(JWTVerificationException e){
+          throw new RuntimeException(e)
+        }
+        return true;
+      }
+    }
+    return true;
+  }
+  @Override
+  public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+
+  }
+  @Override
+  public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,  Object o, Exception e) throws Exception {
+  }
+
+}
+```
+//配置拦截器
+在SpringBoot2.0及Spring 5.0中WebMvcConfigurerAdapter已被废弃，直接实现WebMvcConfigurer （官方推荐）
+```
+@Configuration
+public class InterceptorConfig implements WebMvcConfigurer{
+  @Override
+  public void addInteceptors(InterceptorRegistry registry){
+    registry.addInterceptor(authenticationInterceptor()).addPathPatters("/**");
+  }
+  @Bean //该注解的意思是产生一个上下文的bean对象，交个spring容器管理
+  public AuthenticationInterceptor authenticationInterceptor(){
+    return new AutheticationInterceptor();
+  }
+}
+
+```
+//在访问接口中加入登录操作注解，注解可判断该方法是否需要登录才能调用
+```
+@RestController
+@RestMapping("/api")
+public class UserApi{
+  @AutoWired
+  UserService userService;
+  @AutoWired
+  TokenService tokenService;
+  //登录接口,登录成功之后要将token传到前端，前端赋值给header中的token
+  @PostMapping("/login")
+  public Object login(@RequestBody User user){
+    JSONObject jsonObject = new JSONObject();
+    User userForBase = userService.findByUserName(user);
+    if(userForBase = null){
+      jsonObject.put("message","登录失败，用户不存在");
+      return jsonObject;
+    }else{
+      if (!userForBase.getPassword().equals(user.getPassword())){
+        jsonObject.put("message","登录失败,密码错误");
+        return jsonObject;
+      }else {
+        String token = tokenService.getToken(userForBase);
+        jsonObject.put("token", token);
+        jsonObject.put("user", userForBase);
+        return jsonObject;
+      }
+    }
+  }
+  //验证是否登录成功
+  @RequestMapping("/getMessage")
+  @UserLoginToken
+  public String getMessage(){
+    return "您已成功登录";
+  }
+}
+```
+### json解析
+FastJSON
+```
+<dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>fastjson</artifactId>
+    <version>1.2.47</version>
+</dependency>
+```
+json以json字符串的形式传到后端
+```
+  //json字符串转化成JSONObject对象
+  JSONObject object = JSONObject.parseObject("{\"boolean\":true,\"string\":\"string\",\"list\":[1,2,3],\"int\":2}");
+
+  //从JSONObject中取出对应的string类型的键值
+  String s = object.getString("string");
+
+  //从JSONObject中取出对应的int类型的键值
+  int i = object.getIntValue("int");
+
+
+  //从JSONObject中取出对应的boolean类型的键值
+  boolean b = object.getBooleanValue("boolean");
+
+
+  //从JSONObject中取出对应的list类型的键值，并转化成List对象
+  List<Integer> integers = JSON.parseArray(object.getJSONArray("list").toJSONString(),Integer.class);
+
+  //JSONArray直接转化为List对象,result为list类型json字符串
+  List<String> dataArr = JSONArray.parseArray(result,String.class);
+
+  //从字符串解析JSON对象
+  JSONObject obj = JSON.parseObject("{\"runoob\":\"菜鸟教程\"}");
+
+  //从字符串解析JSON数组
+  JSONArray arr = JSON.parseArray("[\"菜鸟教程\",\"RUNOOB\"]\n");
+
+  //将JSON对象转化为字符串
+  String objStr = JSON.toJSONString(obj);
+
+  //将JSON数组转化为字符串
+  String arrStr = JSON.toJSONString(arr);
+```
+  ### springboot静态资源访问
+  静态资源的配置与两个配置有关
+
+  1.spring.mvc.static-path-pattern  
+  这个配置是决定什么路径指向静态资源，默认为/*。意思就是url满足什么条件，springboot就会去处理静态资源请求。
+
+  2.spring.resources.static.locations
+  这个配置是本地哪个文件中存放的是静态资源，即springboot到哪里去寻找静态资源，也就是配置一指向的地方。
+  这个配置默认值为：
+  classpass:/META-INF/resources/,
+  classpass:/resources/,
+  classpass:/static/,
+  classpass:/public/
+  优先级从高到低，优先级高的文件没找到才会找优先级低的文件。
+
+  配置通常会被拦截，需要在拦截器中配置如下：
+  ```
+  @Configuration
+  public class MvcConfig implements WebMvcConfigurer {
+      @Override
+      public void addResourceHandlers(ResourceHandlerRegistry registry){
+          registry.addResourceHandler("/public/**").addResourceLocations("/resources/static/");
+      }
+  }
+  //意思就是/public/**匹配的url直接指向文件/resources/static
+  ```
+
+
+
+
 
 
 
