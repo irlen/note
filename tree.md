@@ -11,6 +11,8 @@
         - [electron](/front/electron/electron)
     - koa
         - [koa](/front/koa/koa)
+    - typescript
+        - [typescript](/front/typescript)
 - +移动端
     - [react-native](/mobile/reactnative)
     - [flutter](/mobile/flutter)

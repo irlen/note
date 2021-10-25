@@ -352,3 +352,24 @@ iptables -t nat -A PREROUTING -d 10.0.0.188.232 -p tcp --dport 80 -j DNAT --to 1
 
 查看nat表里面的内容
 iptables -t nat -L
+
+
+
+
+### 在centos上安装node环境
+1.下载Linux 二进制文件（x64）
+https://nodejs.org/zh-cn/download/
+
+安装lrzsz工具，将现在的node文件rz到linux服务器上。
+例如放到/node下，解压文件tar -xvf node-v14.15.1-linux-x64.tar.xz
+2.将解压好的文件移动到/usr/local/node下，配置环境变量，并做软链接
+mv /node/node-v14.15.1-linux-x64 /usr/local/node
+配置环境变量
+vi /etc/profile
+在最后一样加上
+export PATH=$PATH:/usr/local/node/bin
+让配置生效
+source  /etc/profile
+配置软链接
+ln -s /usr/local/node/bin/node /usr/local/bin/
+ln -s /usr/local/node/bin/npm /usr/local/bin/
