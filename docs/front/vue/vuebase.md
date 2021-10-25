@@ -82,8 +82,12 @@ methods:{
 
 
 
+<<<<<<< HEAD
+###  Vue-cli
+=======
 ### Vue-cli
 
+>>>>>>> 2f0b9508315e34f50b98258f4dadfa655256af0b
 vue工程的脚手架工具
 全局安装vue-cli
 npm install -g @vue/cli  @vue/cli-service-global
@@ -157,8 +161,14 @@ cnpm install babel-plugin-component -D
 ### vue-router
 
 vue官方路由解决方案
+<<<<<<< HEAD
+
+### 路由
+#组件标签
+=======
 https://router.vuejs.org/zh/installation.html
 组件标签
+>>>>>>> 2f0b9508315e34f50b98258f4dadfa655256af0b
 ```
 <div>
     <router-link to="/foo"></router-link>
@@ -166,7 +176,11 @@ https://router.vuejs.org/zh/installation.html
     <router-view></router-view>
 </div>
 ```
+<<<<<<< HEAD
+
+=======
 定义路由
+>>>>>>> 2f0b9508315e34f50b98258f4dadfa655256af0b
 ```
 const routes = [
     {path:'/foo',component: Foo},
@@ -202,7 +216,7 @@ watch: {
 }
 
 ```
-#使用路由的一些方法
+使用路由的一些方法
 
 //获取参数
 this.$route.params.username;
@@ -381,6 +395,27 @@ location / {
 ```
 
 
+<<<<<<< HEAD
+### 双向绑定高级用法
+const app =  Vue.create({
+  data() {
+    return {
+      count： 1，
+      count1: 1
+    }
+  }
+
+  template: `
+    <Counter />
+  `
+})
+
+app.component('Counter',{
+  data(){
+
+  }
+})
+=======
 ### 状态管理
 
 安装 vuex
@@ -445,3 +480,4 @@ new Vue({
 this.$store.getters.doubleGet
 
 ```
+>>>>>>> 2f0b9508315e34f50b98258f4dadfa655256af0b

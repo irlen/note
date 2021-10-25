@@ -448,7 +448,97 @@ logging:
     console: "%d - %msg%n" //日志格式，输出时间-内容-换行
     file: /var/log/tomcat/sell.log //输出日志的文件
     level: info  //输出日志级别（info及其级别以上的都会被输出）
+    ### 日志
+日志门面：slf4j
+日志实现：logback
+直接使用：
+```
+    private final Logger logger = LoggerFactory.getLogger(当前类.class);
+```
+加注解时候用：
+```
+    @Slf4j, 在类上加这个注解和上面效果一样()
+```
+打印日志：
+```
+log.info("name:"+name+",password="+password);
+或者
+log.info("name:{},password:{}",name,password);
+```
 
+两种配置方式
+1.application.yml(简单功能)
+顶格写
+logging:
+    pattern:
+        console: "%d - %ms%n"  //控制台打印日志格式
+    path: /var/log/tomcat/
+    file: /var/log/tomcat/sell.log //这两项制定日志文件
+    level: debug  //日志级别
+2.logback-spring.xml(复杂配置，比如区分info和erro，每天产生一个日志文件等)
+在resource文件中新建logback-spring.xml
+```
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <!--配置控制台打印相关-->
+    <appender name="consoleLog" class="ch.qos.logback.core.ConsoleAppender" >
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                %d - %msg%n
+            </pattern>
+        </layout>
+    </appender>
+
+    <!--info级别日志文件输出-->
+    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--过滤掉ERROR级别日志（info默认会收录info级别以上的所有日志）-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>
+                %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动策略,根据时间，每天生成一个info日志文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/var/log/tomcat/sell/info.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+
+    <!--error级别日志文件输出-->
+    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>
+                %msg%n
+            </pattern>
+        </encoder>
+        <!--滚动策略,根据时间，每天生成一个info日志文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/var/log/tomcat/sell/error.%d.log</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+
+
+
+
+
+    <!--配置适用所有类，级别为info-->
+    <root level="info">
+        <appender-ref ref="consoleLog">
+        <appender-ref ref="fileInfoLog">
+        <appender-ref ref="fileErrorLog">
+    </root>
+</configuration>
+```
 ### 表单验证及参数接收
 接收参数的几种方式
 ```
