@@ -314,8 +314,90 @@ REDIS_URL = "redis://127.0.0.1:63379" *指定redis的地址*
 
 
 
+### python和js通过AES双边加密解密
+```
+//js解密
+function decrypt(data) {
+    let aes_key = CryptoJS.enc.Utf8.parse(crypt_key);  // 解析后的key
+    let aes_iv = CryptoJS.enc.Utf8.parse(crypt_iv);   // 解析后的iv
+    let baseResult=CryptoJS.enc.Base64.parse(data);   // Base64解密
+    let ciphertext=CryptoJS.enc.Base64.stringify(baseResult);     // Base64解密
+    let decryptResult = CryptoJS.AES.decrypt(ciphertext,aes_key, {    // AES解密
+        iv: aes_iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.ZeroPadding
+    });
+ 
+    const resData = decryptResult.toString(CryptoJS.enc.Utf8).toString();
+    const str = JSON.parse(Base64.decode(resData));
+    return str;
+}
+//加密
+function encrypt(data) {
+    let aes_key = CryptoJS.enc.Utf8.parse(crypt_key);  //解析后的key
+    let new_iv = CryptoJS.enc.Utf8.parse(crypt_iv); //解析后的iv
+    encrypted = CryptoJS.AES.encrypt(data, aes_key, { //AES加密
+        iv: new_iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.ZeroPadding
+    });
+    return encrypted.toString()
+}
+
+pytho端
+route_love:
+def aesEncrypt(self,data):
+
+   data = json.dumps(data, ensure_ascii=False)
+   b64 = base64.b64encode(data.encode("utf-8")).decode('utf-8')
+
+   text = self.add_to_16(b64)
+   cryptor = AES.new(self.key, AES.MODE_CBC, self.iv)
+   cipher_text = cryptor.encrypt(text)
+
+   base = 64
+   if base == 16:
+      # 返回16进制密文
+      return b2a_hex(cipher_text).decode('utf-8')
+   elif base == 64:
+      # 返回base64密文
+      return base64.b64encode(cipher_text).decode('utf-8')
+
+def add_to_16(self, text):
+   pad = 16 - len(text.encode('utf-8')) % 16
+   text = text + pad * chr(pad)
+   return text.encode('utf-8')
+
+route_love:
+def decrypt_aes(self,data):
+   """AES-128-CBC解密"""
+   real_data = base64.b64decode(data)
+
+   my_aes = AES.new(self.key, AES.MODE_CBC, self.iv)
+   decrypt_data = my_aes.decrypt(real_data)
+
+   str_tmp = self.get_str(decrypt_data)
+   string = str_tmp[0:]
+
+   tk = base64.decodebytes(string.encode('utf-8')).decode()
+   tk = json.loads(tk)
+
+   return tk
+
+def get_str(self, bd):
+   """解密后的数据去除加密前添加的数据"""
+   if self.pad == "zero":  # 去掉数据在转化前不足16位长度时添加的ASCII码为0编号的二进制字符
+      return ''.join([chr(i) for i in bd if i != 0])
+
+   elif self.pad == "pkcs7":  # 去掉pkcs7模式中添加后面的字符
+      return ''.join([chr(i) for i in bd if i > 32])
+
+   else:
+      return "不存在此种数据填充方式"
 
 
+
+```
 
 
 

@@ -12,7 +12,17 @@ dart中的类和接口是统一的，类就是接口（和java完全不同）；
 类使用implements实现接口（类也可以作为接口被另一个类实现），需要实现接口里面所有的实例属性和方法；
 一般要实现接口的功能，使用抽象类来做；
 
-
+### 参数
+dart中参数分为两种，命名参数和可选参数
+命名参数{}，可传可不传
+student(String name,{int age,String gender}){
+}
+student('小明',age:12);
+可选参数
+student(String name,[int age,String gender]){
+}
+根据位置判断
+student("小明",12);
 ### Mixins
 Mixins类似于多继承，是在多类继承中重用一类代码的方式；
 作为Mixins的类不能有显示声明构造方法（B,C为Mixins类），且只能继承于Object类；
@@ -121,4 +131,3 @@ windows10环境
       maven { url 'https://maven.aliyun.con/repository/jcenter' }
       maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
   ```
-
