@@ -2,6 +2,7 @@
 1.进入微信公众平台官网
   http://mp.weixin.qq.com
   -注册账号（分为个人和企业，只能注册个人）
+  个人账号无微信认证和微信支付等高级功能。
   -下载微信开发者工具(开发文档-工具-下载)
   -登录小程序上号后台获取appid
 
@@ -18,7 +19,7 @@ font-family:"PingFangSC-Thin";
 }
 
 3.数据传递
-父组件向子组件传递数据是实用properties
+父组件向子组件传递数据是使用properties
 Component({
   properties:{
     属性名:{
@@ -43,15 +44,29 @@ behaviors:[]
 
 
 4.页面生命周期函数
-onLoad:funciton(){//页面加载,onLoad在onReady之前触发，且每次更新都会触发}
-onReady:function(){//页面初次渲染完成}
-onShow:function(){//页面显示}
-onHide:function(){//页面隐藏}
-onUnload:function(){//页面卸载}
+  onLoad:funciton(){
+    //页面加载,onLoad在onReady之前触发，且每次更新都会触发
+  }
+  onReady:function(){
+    //页面初次渲染完成
+  }
+  onShow:function(){
+    //页面显示
+  }
+  onHide:function(){
+    //页面隐藏
+  }
+  onUnload:function(){
+    //页面卸载
+  }
 
 5.组件生命周期函数
-create:function(){//组件实例进入页面节点树的时候执行，注意此时不能调用setData}
-attached: funciton(){//组件实例进图页面节点树的时候执行,常用}
+create:function(){
+  //组件实例进入页面节点树的时候执行，注意此时不能调用setData
+}
+attached: funciton(){
+  //组件实例进入页面节点树的时候执行,常用
+}
 6.请求数据
 wx.request({
     url,
@@ -62,8 +77,7 @@ wx.request({
     success:function(result){},
     fail:function(result){},
     complete:function(){//接口调用结束后的回调函数，成功或失败都会执行}
-  })
+})
 
 7.引入ui框架weUI
 https://developers.weixin.qq.com/miniprogram/dev/extended/weui/
-
