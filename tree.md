@@ -5,6 +5,7 @@
     - vue
         - [vue工程](/front/vue/project)
         - [vue基础语法](/front/vue/vuebase)
+        - [vue3](/front/vue/vue3)
     - api
         - [原生api](/front/api)
     - electron
