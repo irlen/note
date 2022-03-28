@@ -37,7 +37,13 @@ sudo yum install -y yum-utils device-mapper-persistent-data lvm2
 sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 
 4.安装docker
-sudo yum install docker-ce -y
+查看可安装的版本
+yum list docker-ce --showduplicates | sort -r
+选择一个版本安装
+sudo yum -y install docker-ce-18.03.1.ce
+启动docker并设置开机启动
+systemctl start docker
+systemctl enable docker
 
 5.设置ustc镜像（可以提升docker拉取镜像的速度）
 ```
