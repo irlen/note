@@ -37,3 +37,41 @@ Router({
     RewriteRule . /index.html [L]
 
 </IfModule>
+
+
+
+
+### vite,vue3.0项目打包到apache
+//如果apache中的根目录为/m
+
+
+1.router.js中配置
+const router = createRouter({
+	history: createWebHistory('/m/'),
+	routes,
+})
+2. vite.config.js (配置base为目录地址’/m/’)
+import vue from '@vitejs/plugin-vue'
+export default({
+	// 起个别名，在引用资源时，可以用‘@/资源路径’直接访问
+
+	plugins: [
+		vue(),
+	],
+	base: '/m/',
+})     
+3. 修改Apache中httpd.conf文件，开启rewrite_module功能:    
+LoadModule rewrite_module libexec/apache2/mod_rewrite.so，去掉前面的#，打开注释。
+
+找到 AllowOverride None 的那行，把它改成 AllowOverride All，来使 .htaccess 文件生效。
+
+在apache的www/m目录下创建.htaccess文件，内容为
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /m/index.html [L]
+</IfModule>
+最后将打包文件放到根目录
