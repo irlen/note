@@ -22,3 +22,9 @@ let objData = reactive({
  });
  // 数据对象解构
  let { webName, webUrl } = toRefs(objData);
+
+
+### vue3+Ts
+创建项目
+npm init vite@latest vepal-ts-app -- --template vue-ts
+如果使用vscode，安装volar插件。
