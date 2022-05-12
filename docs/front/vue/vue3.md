@@ -1,6 +1,10 @@
 # vue3
 elementplus组件库
 https://element-plus.org/zh-CN/guide/design.html
+naiveui组件库
+https://www.naiveui.com/zh-CN/dark
+naiveui中后台的项目模板
+https://github.com/jekip/naive-ui-admin
 
 ### 项目构建
   npm方式
